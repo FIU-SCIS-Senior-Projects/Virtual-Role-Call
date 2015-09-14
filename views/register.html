@@ -1,0 +1,40 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+
+</head>
+<body>
+
+    <form>
+        <h1>Officer Registration</h1>
+
+        <input type="text" placeholder="Last Name" ng-model="lastName">
+        <input type="text" placeholder="First Name" ng-model="firstName">
+        <input type="text" placeholder="username"  ng-model="username">
+        <input type="password" placeholder="password" ng-model="password">        
+
+        <div>
+            <select ng-model="userType" class="userSelect">
+                <option value="" disabled selected style="display: none;">Type of Officer</option>
+                <option value="Officer">Officer</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Administrator">Administrator</option>
+            </select>
+
+            <select ng-model="userShift" class="userSelect">
+                <option value="" disabled selected style="display: none;">Select officer Shift</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>           
+        </div>
+        <br>
+        <button type="submit" ng-click="register()">Register</button>
+
+        <p style="color:red">{{message}}</p>
+    </form>
+
+
+</body>
+</html>
