@@ -53,10 +53,10 @@ $login_session = $_SESSION['user_Session'];
         </div> <!--CONTROLLER -->
 
 
-<!--                <div id="profile">
-                    <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
-                    <br>
-                </div>-->
+        <!--                <div id="profile">
+                            <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
+                            <br>
+                        </div>-->
 
         <!--modules-->
         <script src="../js/app.js"></script> 

@@ -20,17 +20,19 @@ app.controller('LoginController', ['$scope', 'DataRequest', '$window',
 
                 DataRequest.login(username).then(function (data) {
 
-                    // decrypt the password stored in the database.
-                    var decryptedPass = CryptoJS.AES.decrypt(data['password'], "fiu");
-                    var pass = CryptoJS.enc.Latin1.stringify(decryptedPass);
-
-                    if (data['username'] === null || (pass !== pw)) {
+                    if (data['username'] !== null) {
+                        //username found. check password
+                        var decryptedPass = CryptoJS.AES.decrypt(data['password'], "fiu");
+                        var pass = CryptoJS.enc.Latin1.stringify(decryptedPass);
+                        if (pass === pw) {
+                            var userType = data['type'];
+                            var username = data['username'];
+                            window.location.href = "php/Session.php?username=" + username + "&type=" + userType;
+                        } else {// credentials are invalid
+                            $scope.message = "Invalid credentials. Try Again!";
+                        }
+                    } else {
                         $scope.message = "Invalid credentials. Try Again!";
-                    } else { //username found
-
-                        var userType = data['type'];
-                        var username = data['username'];
-                        window.location.href = "php/Session.php?username=" + username + "&type=" + userType;
                     }
                 }, function (error) {
                     console.log("Error: " + error);
