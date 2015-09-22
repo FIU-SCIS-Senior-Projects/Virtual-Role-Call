@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>User Profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+
+                    <br>
+                    <p class=" text-info">{{users[0].registration}} </p>
+                </div>
+                <!--Use this to display error messages-->
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 
+                     col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+
+                    <br>
+                    <div class="panel panel-info" ng-init="getUserInfo()">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{users[0].name}}  {{users[0].lName}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 col-lg-3 " align="center"> 
+                                    <img alt="User Pic" 
+                                         src="../img/badge.jpg" 
+                                         class="img-circle img-responsive"> 
+                                </div>
+
+                                <div class=" col-md-9 col-lg-9 "> 
+                                    <table class="table table-user-information">
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-weight: bold">Last Name</td>
+                                                <td>
+                                                    <input style="height: 40px" type="text" placeholder="Last Name" ng-model="lName">    
+                                                </td> 
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold">First Name:</td>
+                                                <td>
+                                                    <input style="height: 40px" type="text" placeholder="First Name" ng-model="fName">   
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold">Username</td>
+                                                <td>
+                                                    <input style="height: 40px" type="text" placeholder="Username" ng-model="uName">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                            <tr>
+                                                <td style="font-weight: bold">Password</td>
+                                                <td>
+                                                    <input style="height: 40px" type="password" placeholder="password" ng-model="userPass"><br>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="font-weight: bold">User Type</td>
+                                                <td>
+                                                    <select style="height: 48px" ng-model="uType">
+                                                        <option value="" disabled selected style="display: none;">Select type Officer</option>
+                                                        <option value="Officer">Officer</option>
+                                                        <option value="Supervisor">Supervisor</option>
+                                                        <option value="Administrator">Administrator</option>
+                                                    </select>      
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold">Officer Shift</td>
+                                                <td>
+                                                    <select style="height: 48px" ng-model="uShift">
+                                                        <option value="" disabled selected style="display: none;">Select officer Shift</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                    </select>    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <p style="color:red"> {{message}}</p>
+                                    </table>
+
+                                    <a class="btn btn-primary" ng-click="save()">Save</a>
+                                    <a href="#/editUser" class="btn btn-primary">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer" style="height: 48px">
+                            <span class="pull-right">
+                                <a data-original-title="Remove this user" data-toggle="tooltip" class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-remove"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

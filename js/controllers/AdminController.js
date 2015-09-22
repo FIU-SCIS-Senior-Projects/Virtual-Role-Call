@@ -4,7 +4,8 @@
 //            var decrypted = CryptoJS.AES.decrypt(encryptedPass, "fiu");
 //            console.log("decrypted", CryptoJS.enc.Latin1.stringify(decrypted));
 
-app.controller('AdminController', ['$scope', 'DataRequest', '$window', function ($scope, DataRequest, window) {
+app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routeParams',
+    function ($scope, DataRequest, window, $routeParams) {
 
         //Admin options
         $scope.OptionsBar = [
@@ -14,6 +15,27 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', function 
             {name: 'Add new Task type', url: 'newTask'},
             {name: 'View Logs', url: 'viewLogs'}
         ];
+        // For toggling the submenu (view as) for admin
+        (function ($) {
+            $(document).ready(function () {
+                $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $(this).parent().siblings().removeClass('open');
+                    $(this).parent().toggleClass('open');
+                });
+            });
+        })(jQuery);
+
+
+        // get the register users and populate the table
+        $scope.retrieveUsers = function () {
+            DataRequest.getRegisteredUsers().then(function (data) {
+                $scope.users = data;
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
 
         $scope.register = function () {
 
@@ -31,13 +53,12 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', function 
                 //encrypt password using "cryptoJS"
                 var encryptedPass = CryptoJS.AES.encrypt(password, "fiu");
                 var strPass = encryptedPass.toString();
-
                 DataRequest.register(lastName, firstName, username, strPass, userType, userShift)
                         .then(function (data) {
                             if (data['username'] === null) {
                                 $scope.message = "*Registration unsucessful. This username is already associated with another user.";
                             } else { //sucessful registration
-                                confirm(data['username'] + " Sucesfully added.")
+                                confirm(data['username'] + " Sucesfully added.");
                                 window.location.reload();
                             }
                         }, function (error) {
@@ -45,6 +66,84 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', function 
                         });
             }
         };
+
+        // Populates the Details form when editing a user.
+        $scope.getUserInfo = function () {
+            var id = Number($routeParams.id); // user to find. cast into an int
+
+            DataRequest.getUser(id).then(function (data) {
+                // The id entered does not match any records
+                if (data.lastName === null) {
+                    console.log("Error", "This user does not exist");
+                } else {   // populate the form with the user's data.
+                    $scope.lName = data.lastName;
+                    $scope.fName = data.firstName;
+                    $scope.uName = data.username;
+                    //decrypt password before showin in form.
+                    $scope.userPass = CryptoJS.enc.Latin1.stringify(CryptoJS.AES.decrypt(data.password, "fiu"));
+                    $scope.uType = data.type;
+                    $scope.uShift = data.shift;
+                }
+
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+
+//            routeParams take a moment to load in the controller. wait 20 ms
+//            $timeout(function () {  
+//            }, 20);
+        };
+
+        // saves updated info when editing user.
+        $scope.save = function () {
+
+            if (!(this.lName && this.uName && this.userPass && this.uType && this.uShift)) {
+                $scope.message = "*Please complete all fields.";
+            } else {
+                // all data is entered. Proceed with the update.
+                var id = Number($routeParams.id);
+                //encrypt password before storing in database during update.
+                var encryptedPass = CryptoJS.AES.encrypt(this.userPass, "fiu");
+                var strPass = encryptedPass.toString();
+                // make a request to store the data during the update.
+
+                DataRequest.save(id, this.lName, this.fName, this.uName,
+                        strPass, this.uType, this.uShift)
+                        .then(function (data) {
+
+                            if (data.response === null) { // unsucessful update
+                                $scope.message = "*This username already belongs to another user";
+                            } else {
+                                confirm("User has been updated");
+                                //redirect back to the users list.
+                                window.location.href = "#/editUser";
+                            }
+                        }, function (error) {
+                            console.log("Error: " + error);
+                        });
+            }
+        };
+//        function setTableBackground() {
+//            console.log("IM here");
+//            console.log(document);
+////            if (document.getElementsByTagName) {
+//            var table = document.getElementById("usersTable");
+//            console.log(table);
+//            var rows = table.getElementsByTagName("tr");
+//
+//            for (i = 0; i < rows.length; i++) {
+//                //manipulate rows 
+//
+//                if (i % 2 === 0) {
+//                    console.log("im even");
+//                    rows[i].style.backgroundColor = "red";
+//                } else {
+//                    rows[i].style.backgroundColor = "blue";
+//                }
+//            }
+//        }
+//        }
+
     }]);
 
 

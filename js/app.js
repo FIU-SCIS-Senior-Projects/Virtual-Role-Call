@@ -1,5 +1,4 @@
 /* global angular */
-//var app = angular.module('VRC_App', ['ngRoute']);
 
 var app = angular.module('VRC_App', ['ngRoute']);
 
@@ -11,6 +10,9 @@ app.config(function ($routeProvider) { //$routeProvider defines the application 
             .when('/editUser', {
                 templateUrl: '../views/editUser.html'
             })
+            .when('/editUser/:id', {
+                templateUrl: '../views/Details.html'
+            })
             .when('/editArchive', {
                 templateUrl: '../views/editArchive.html'
             })
@@ -19,6 +21,12 @@ app.config(function ($routeProvider) { //$routeProvider defines the application 
             })
             .when('/newTask', {
                 templateUrl: '../views/newTask.html'
+            }) //Other users profiles
+            .when('/Supervisor', {
+                templateUrl: './Supervisor_Profile.php'
+            })
+            .when('/Officer', {
+                templateUrl: './Officer_Profile.php'
             })
             .otherwise({
                 redirectTo: '/register'
