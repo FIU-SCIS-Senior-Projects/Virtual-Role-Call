@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2015 at 08:46 AM
+-- Generation Time: Sep 22, 2015 at 03:28 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,17 +32,23 @@ CREATE TABLE IF NOT EXISTS `users` (
   `First_Name` varchar(15) NOT NULL,
   `Username` varchar(15) NOT NULL COMMENT 'at most 15 chars',
   `Password` varchar(50) NOT NULL COMMENT 'encrypted',
-  `Type` text NOT NULL COMMENT '1)Officer, 2)Sargent, 3)Admin',
+  `userType` text NOT NULL COMMENT '1)Officer, 2)Sargent, 3)Admin',
   `Shift` varchar(1) DEFAULT NULL COMMENT 'Officer shift',
   `RegistrationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `Username` (`Username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+  UNIQUE KEY `Username` (`Username`),
+  KEY `ID` (`ID`),
+  KEY `ID_2` (`ID`),
+  KEY `ID_3` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `users`
 --
 
+INSERT INTO `users` (`ID`, `Last_Name`, `First_Name`, `Username`, `Password`, `userType`, `Shift`, `RegistrationDate`) VALUES
+(52, 'Vincench', 'Frank', 'frank', 'U2FsdGVkX1/XJCD8ZUCQLa6XHNpsZL5eN3DyspDJDeo=', 'Administrator', 'A', '2015-09-13 23:58:54'),
+(53, 'Reidy', 'Peter', 'peter', 'U2FsdGVkX19r/1lQXQAKZ4obW3gO5933pcm5x+QnQ2g=', 'Supervisor', 'A', '2015-09-14 22:55:19'),
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
