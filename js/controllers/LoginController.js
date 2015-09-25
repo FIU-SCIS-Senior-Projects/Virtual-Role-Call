@@ -1,17 +1,15 @@
 
-/* global app */
+/* global app, login */
 
-app.controller('LoginController', ['$scope', 'DataRequest', '$window',
+login.controller('LoginController', ['$scope', 'DataRequest', '$window',
     function ($scope, DataRequest, window) {
 
         $scope.message = "";
         var username = '';
         var pw = '';
-
         $scope.loginRequest = function () {
             username = $scope.username;
             pw = $scope.password;
-
             //are both username and password entered?
             if (!(username && pw)) {
                 $scope.message = "*Username or password not entered.";

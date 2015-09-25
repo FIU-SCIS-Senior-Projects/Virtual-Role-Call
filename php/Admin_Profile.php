@@ -7,22 +7,26 @@ $login_session = $_SESSION['user_Session'];
     <head>
         <title>Admin Page</title>
 
-        <!--ANGULAR-->
-        <script src="../js/vendor/angular.min.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> <!--ANGULAR-->
         <script src="https://code.angularjs.org/1.2.28/angular-route.min.js"></script> <!--ROUTING-->
 
         <!-- jquery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
         <!-- bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> <!-- CSS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <!-- BOOTSTRAP's JS -->
 
-        <!-- CSS -->  
+        <!--UI_boostrap-->
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.js"></script>
+
+        <!-- Admin CSS -->  
         <link type="text/css" rel="stylesheet" href="../css/admin.css"/>
 
         <!--CryptoJS-->
         <script src="../js/vendor/encryptor.js"></script>
+        <!--Idle script-->
+        <script src="../js/vendor/angular-idle.min.js"></script>
 
     </head>
     <body ng-app="VRC_App" class="container">
@@ -30,7 +34,7 @@ $login_session = $_SESSION['user_Session'];
         <br>
         <div ng-controller = "AdminController">
             <!--Nav-Bar containing all the options -->
-            <div class="navContainer">
+            <div class="navContainer" ng-init="start()">
                 <div class="row">
                     <nav class="nav navbar-inverse navbar-static-top marginBottom-0" role="navigation">
                         <ul class="nav nav-pills">
@@ -72,6 +76,34 @@ $login_session = $_SESSION['user_Session'];
             <ng-view></ng-view>
 
         </div> <!--CONTROLLER -->
+
+        <!--This modal will be displayed if the user is idle for too long.-->
+        <script type="text/ng-template" id="warning-dialog.html">
+            <div class="modal-header">
+            <h3>You have been idle for too long. You will be logged out!</h3>
+            </div>
+            <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+            <progressbar max="5" value="5" animate="false" class="progress-striped active">
+                        You'll be logged out in {{countdown}} second(s).
+                        </progressbar>
+            </div>
+        </script>
+
+
+
+<!--        <script type="text/ng-template" id="timedout-dialog.html">
+    <div class="modal-header">
+    <h3>You've Timed Out!</h3>
+    </div>
+    <div class="modal-body">
+    <p>
+    You were idle too long. Normally you'd be logged out, but in this demo just do anything and you'll be reset.
+    </p>
+    </div>
+</script>-->
+
+
+
 
         <br><br>
         <p style="float: right">&copy; 2015 Pinecrest PD. All rights reserved.<p>

@@ -4,8 +4,8 @@
 //            var decrypted = CryptoJS.AES.decrypt(encryptedPass, "fiu");
 //            console.log("decrypted", CryptoJS.enc.Latin1.stringify(decrypted));
 
-app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routeParams',
-    function ($scope, DataRequest, window, $routeParams) {
+app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routeParams', 'Idle', '$modal',
+    function ($scope, DataRequest, window, $routeParams, Idle, $modal) {
 
         //Admin options
         $scope.OptionsBar = [
@@ -27,6 +27,44 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
             });
         })(jQuery);
 
+//      **************** monitoring idle user ************ ****
+
+        $scope.started = false;
+        function closeModals() {
+            if ($scope.warning) {
+                $scope.warning.close(); // close the warning modal
+                $scope.warning = null;
+            }
+
+            if ($scope.timedout) {
+                $scope.timedout.close();
+                $scope.timedout = null;
+            }
+        }
+
+        $scope.$on('IdleStart', function () {
+            closeModals();
+            $scope.warning = $modal.open({
+                templateUrl: 'warning-dialog.html',
+                windowClass: 'modal-danger'
+            });
+        });
+
+        $scope.$on('IdleEnd', function () {
+            closeModals();
+        });
+
+        $scope.$on('IdleTimeout', function () { // Timed out.
+            closeModals();
+            window.location.href = "../php/logout.php";  //Log the user out.
+        });
+
+        $scope.start = function () {
+            closeModals();
+            Idle.watch(); // begin monitoring.
+            $scope.started = true;
+        };
+//  ****************************************************************
 
         // get the register users and populate the table
         $scope.retrieveUsers = function () {
@@ -58,7 +96,8 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                             if (data['username'] === null) {
                                 $scope.message = "*Registration unsucessful. This username is already associated with another user.";
                             } else { //sucessful registration
-                                confirm(data['username'] + " Sucesfully added.");
+//                                confirm(data['username'] + " Sucesfully added.");
+                                confirm("User Sucessfully Added");
                                 window.location.reload();
                             }
                         }, function (error) {
@@ -84,14 +123,9 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                     $scope.uType = data.type;
                     $scope.uShift = data.shift;
                 }
-
             }, function (error) {
                 console.log("Error: " + error);
             });
-
-//            routeParams take a moment to load in the controller. wait 20 ms
-//            $timeout(function () {  
-//            }, 20);
         };
 
         // saves updated info when editing user.

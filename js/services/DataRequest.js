@@ -1,8 +1,9 @@
 /* global app */
 
-app.factory('DataRequest', function ($http, $q) {
+//module for login
+login.factory('DataRequest', function ($http, $q) {
 
-    return{
+    return {
         login: function (username, password) {
 
             function promiseExecutor(resolve, reject) {
@@ -15,7 +16,14 @@ app.factory('DataRequest', function ($http, $q) {
                         });
             }
             return $q(promiseExecutor); // this function will determine when the function is finished.
-        },
+        }
+    };
+});
+
+// module for the rest of the rest of the system.
+app.factory('DataRequest', function ($http, $q) {
+
+    return{
         register: function (lastName, firstName, username, encryptedPass, userType, userShift) {
 
             function promiseExecutor(resolve, reject) {
@@ -77,6 +85,5 @@ app.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished.      
         },
-        
     };
 });

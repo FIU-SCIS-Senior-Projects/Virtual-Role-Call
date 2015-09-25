@@ -47,8 +47,6 @@ class DBHandler {
         global $dbConn;
         $result = ["username" => NULL];
 
-        echo $lastName, $firstName, $username, $password, $userType, $userShift;
-
         if (!($stmt = $dbConn->prepare("INSERT INTO users(Last_Name,First_Name,Username,Password,userType,Shift) "
                 . "VALUES (?,?,?,?,?,?)"))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
