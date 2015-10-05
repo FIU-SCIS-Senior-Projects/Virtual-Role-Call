@@ -1,10 +1,10 @@
 
-/* global app */
+/* global admin */
 //decryption
-//            var decrypted = CryptoJS.AES.decrypt(encryptedPass, "fiu");
+//            var decdrypted = CryptoJS.AES.decrypt(encryptedPass, "fiu");
 //            console.log("decrypted", CryptoJS.enc.Latin1.stringify(decrypted));
 
-app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routeParams', 'Idle', '$modal',
+admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routeParams', 'Idle', '$modal',
     function ($scope, DataRequest, window, $routeParams, Idle, $modal) {
 
         //Admin options
@@ -27,21 +27,32 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
             });
         })(jQuery);
 
+
+        //display message through a modal.
+        function displayMessage(message) {
+            $scope.message = message;
+            $scope.msgModal = $modal.open({
+                templateUrl: 'notification.html',
+                windowClass: 'modal-danger',
+                scope: $scope
+            });
+        }
 //      **************** monitoring idle user ************ ****
 
         $scope.started = false;
+        // close modals.
         function closeModals() {
             if ($scope.warning) {
                 $scope.warning.close(); // close the warning modal
                 $scope.warning = null;
             }
-
-            if ($scope.timedout) {
-                $scope.timedout.close();
-                $scope.timedout = null;
+            if ($scope.msgModal) {
+                $scope.msgModal.close();
+                $scope.msgModal = null;
             }
         }
 
+        // user has been idle for too long. Prompt message.
         $scope.$on('IdleStart', function () {
             closeModals();
             $scope.warning = $modal.open({
@@ -49,16 +60,16 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                 windowClass: 'modal-danger'
             });
         });
-
+        // idle warning time has ended. close the notificatoin modal.
         $scope.$on('IdleEnd', function () {
             closeModals();
         });
-
+        // idle timeout. sign user out.
         $scope.$on('IdleTimeout', function () { // Timed out.
             closeModals();
             window.location.href = "../php/logout.php";  //Log the user out.
         });
-
+        // begin idle time monitoring.
         $scope.start = function () {
             closeModals();
             Idle.watch(); // begin monitoring.
@@ -68,9 +79,28 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
 
         // get the register users and populate the table
         $scope.retrieveUsers = function () {
+
             DataRequest.getRegisteredUsers().then(function (data) {
-                $scope.users = data;
-            }, function (error) {
+                var list = [];
+                for (var x in data) {
+                    var status;
+                    data[x].OnlineStatus ? status = "../img/online.ico" : status = "../img/offline.ico";
+
+                    var tmp = new Object();
+
+                    tmp.id = data[x].id;
+                    tmp.lastName = data[x].lastName;
+                    tmp.firstName = data[x].firstName;
+                    tmp.username = data[x].username;
+                    tmp.type = data[x].type;
+                    tmp.shift = data[x].shift;
+                    tmp.status = status;
+                    // add the object to the list.
+                    list.push(tmp);
+                }
+                $scope.users = list;
+            }
+            , function (error) {
                 console.log("Error: " + error);
             });
         };
@@ -85,7 +115,8 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
             var userType = this.userType;
             var userShift = this.userShift;
             if (!(lastName && firstName && username && password && userType && userShift)) {
-                this.message = "*Please complete all fields.";
+                displayMessage("*Please complete all fields.");
+
             } else { // all fields entered. Register user.
 
                 //encrypt password using "cryptoJS"
@@ -93,19 +124,22 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                 var strPass = encryptedPass.toString();
                 DataRequest.register(lastName, firstName, username, strPass, userType, userShift)
                         .then(function (data) {
+
                             if (data['username'] === null) {
-                                $scope.message = "*Registration unsucessful. This username is already associated with another user.";
+                                displayMessage("*This username is already associated with another user.");
                             } else { //sucessful registration
-//                                confirm(data['username'] + " Sucesfully added.");
-                                confirm("User Sucessfully Added");
-                                window.location.reload();
+                                displayMessage(username + " has been sucessfully registered.");
+                                //wait 2 seconds.
+                                setTimeout(function () {
+                                    //reload page after 2 seconds of sucessul registration.
+                                    window.location.reload();
+                                }, 2000);
                             }
                         }, function (error) {
                             console.log("Error: " + error);
                         });
             }
         };
-
         // Populates the Details form when editing a user.
         $scope.getUserInfo = function () {
             var id = Number($routeParams.id); // user to find. cast into an int
@@ -113,7 +147,7 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
             DataRequest.getUser(id).then(function (data) {
                 // The id entered does not match any records
                 if (data.lastName === null) {
-                    console.log("Error", "This user does not exist");
+                    console.log("Error", "This user does not exist.");
                 } else {   // populate the form with the user's data.
                     $scope.lName = data.lastName;
                     $scope.fName = data.firstName;
@@ -122,6 +156,7 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                     $scope.userPass = CryptoJS.enc.Latin1.stringify(CryptoJS.AES.decrypt(data.password, "fiu"));
                     $scope.uType = data.type;
                     $scope.uShift = data.shift;
+                    $scope.regDate = data.Registration;
                 }
             }, function (error) {
                 console.log("Error: " + error);
@@ -146,17 +181,37 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
                         .then(function (data) {
 
                             if (data.response === null) { // unsucessful update
-                                $scope.message = "*This username already belongs to another user";
+                                displayMessage("*This username already belongs to another user.");
                             } else {
-                                confirm("User has been updated");
-                                //redirect back to the users list.
-                                window.location.href = "#/editUser";
+                                displayMessage("User has been updated.");
+                                setTimeout(function () {
+                                    closeModals();
+                                    //redirect back to the users list after 2 seconds of sucessul editing user.
+                                    window.location.href = "#/editUser";
+                                }, 1500);
                             }
                         }, function (error) {
                             console.log("Error: " + error);
                         });
             }
         };
+
+        $scope.removeUser = function () {
+            DataRequest.removeUser($routeParams.id)
+                    .then(function (data) {
+                        if (data.response === "success") {
+                            displayMessage("User sucessfully removed.");
+                            setTimeout(function () {
+                                closeModals();
+                                //redirect back to the users list after 2 seconds of sucessul editing user.
+                                window.location.href = "#/editUser";
+                            }, 1500);
+                        }
+                    }, function (error) {
+                        console.log("Error: " + error);
+                    });
+        };
+
 //        function setTableBackground() {
 //            console.log("IM here");
 //            console.log(document);
@@ -177,7 +232,6 @@ app.controller('AdminController', ['$scope', 'DataRequest', '$window', '$routePa
 //            }
 //        }
 //        }
-
     }]);
 
 

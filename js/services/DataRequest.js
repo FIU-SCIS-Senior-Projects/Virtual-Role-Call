@@ -1,4 +1,4 @@
-/* global app */
+/* global admin, login */
 
 //module for login
 login.factory('DataRequest', function ($http, $q) {
@@ -21,7 +21,7 @@ login.factory('DataRequest', function ($http, $q) {
 });
 
 // module for the rest of the rest of the system.
-app.factory('DataRequest', function ($http, $q) {
+admin.factory('DataRequest', function ($http, $q) {
 
     return{
         register: function (lastName, firstName, username, encryptedPass, userType, userShift) {
@@ -85,5 +85,16 @@ app.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished.      
         },
+        removeUser: function (id) {
+            function promiseExecutor(resolve, reject) {
+                $http.post("removeUser.php", {"id": id})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        }
     };
 });

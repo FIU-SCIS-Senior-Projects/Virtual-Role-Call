@@ -29,7 +29,7 @@ $login_session = $_SESSION['user_Session'];
         <script src="../js/vendor/angular-idle.min.js"></script>
 
     </head>
-    <body ng-app="VRC_App" class="container">
+    <body ng-app="adminModule" class="container">
 
         <br>
         <div ng-controller = "AdminController">
@@ -52,8 +52,8 @@ $login_session = $_SESSION['user_Session'];
                                         <a class="dropdown-toggle" data-toggle="dropdown">View as</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="./Admin_Profile.php#/">View As Administrator</a></li>
-                                            <li><a href="#/Supervisor">View As Supervisor</a></li>
-                                            <li><a href="#/Officer">View As Officer</a></li>
+                                            <li><a href="Supervisor_Profile.php">View As Supervisor</a></li>
+                                            <li><a href="Officer_Profile.php">View As Officer</a></li>
                                         </ul>
                                     </li>
                                     <li> 
@@ -82,28 +82,22 @@ $login_session = $_SESSION['user_Session'];
             <div class="modal-header">
             <h3>You have been idle for too long. You will be logged out!</h3>
             </div>
-            <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+            <div idle-countdown="countdown" ng-init="countdown = 5" class="modal-body">
             <progressbar max="5" value="5" animate="false" class="progress-striped active">
-                        You'll be logged out in {{countdown}} second(s).
-                        </progressbar>
+            You'll be logged out in {{countdown}} second(s).
+            </progressbar>
             </div>
         </script>
 
-
-
-<!--        <script type="text/ng-template" id="timedout-dialog.html">
-    <div class="modal-header">
-    <h3>You've Timed Out!</h3>
-    </div>
-    <div class="modal-body">
-    <p>
-    You were idle too long. Normally you'd be logged out, but in this demo just do anything and you'll be reset.
-    </p>
-    </div>
-</script>-->
-
-
-
+        <!--this modal is used for notification purposes-->
+        <script type="text/ng-template" id="notification.html">
+            <div class="modal-content">              
+            <div class="modal-body">
+            <h3>Information</h3>
+            <h4 style="color:red; text-align:center">{{message}}</h4>
+            </div>       
+            </div>
+        </script>
 
         <br><br>
         <p style="float: right">&copy; 2015 Pinecrest PD. All rights reserved.<p>
@@ -112,7 +106,6 @@ $login_session = $_SESSION['user_Session'];
                                 <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
                                 <br>
                             </div>-->
-
             <!--modules-->
             <script src="../js/app.js"></script> 
             <!--controllers-->

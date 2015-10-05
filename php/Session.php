@@ -9,8 +9,7 @@ $userType = $params['type'];
 
 
 // Force users to have a single sign in within the same browser.
-if (isset($_SESSION["user_Session"]) && $_SESSION["user_Session"]) {
-    unset($_SESSION);
+if ($_SESSION["user_Session"] === $username) {
     ?>
 
     <!--Send user back to login page by catching the event with jquery-->
@@ -21,18 +20,14 @@ if (isset($_SESSION["user_Session"]) && $_SESSION["user_Session"]) {
                 $(window).trigger("okbuttonclicked");
             };
         }(window.alert, window.jQuery);
-
         $(window).on("okbuttonclicked", function () {
             window.location.href = "../index.html";
-            console.log("you clicked ok");
         });
         alert("You are already logged in");
     </script>
-
     <?php
     exit;
 }
-
 // Redirect user to their page using their credentials.
 switch ($userType) {
     case "Officer":
