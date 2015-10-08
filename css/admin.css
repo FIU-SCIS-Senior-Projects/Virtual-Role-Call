@@ -25,7 +25,7 @@ body{
 
 // #####################  SUBMENU #########
 .marginBottom-0 { // display submenu to the right of the parent menu.
-    margin-bottom:0;
+                  margin-bottom:0;
 }
 
 .dropdown-menu{
@@ -135,37 +135,8 @@ button {
 table {
     height:15px;
     overflow-y: scroll;
-    /*    height: 100px !important;
-        overflow: scroll;
-        background-color: royalblue;*/
 }
 
-/*thdead, tbody, tr, td, th { display: block; }*/
-
-/*tr:after {
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
-}*/
-
-/*thead th {
-    height: 30px;
-
-    text-align: left;
-}*/
-
-/*tbody {
-        height: 120px;
-        overflow-y: auto;
-        height: 10px !important;
-    max-height: 50px;
-}*/
-
-/*thead {
-     fallback 
-}*/
-
 tbody td, thead th {
-    font-size: 18px
+    font-size: 18px       
 }

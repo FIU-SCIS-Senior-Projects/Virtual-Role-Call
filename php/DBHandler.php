@@ -22,9 +22,11 @@ class DBHandler {
         //store the result here
         $result = ["username" => NULL,
             "password" => NULL,
-            "type" => NULL];
+            "type" => NULL,
+            "onlineStatus" => NULL
+        ];
 
-        $stmt = $dbConn->prepare("SELECT username,password,userType"
+        $stmt = $dbConn->prepare("SELECT username,password,userType,onlineStatus"
                 . " FROM users WHERE username=?");
         if (!$stmt) {
             return -1;
@@ -32,22 +34,44 @@ class DBHandler {
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
-        $stmt->bind_result($result["username"], $result['password'], $result["type"]);
+        $stmt->bind_result($result['username'], $result['password'], $result['type'], $result['onlineStatus']);
         // no results found.
         if (!$stmt->fetch()) {
             return $result;
         }
-        // close connections.
-        $dbConn->close();
+        //close the statement.
         $stmt->close();
+
+        if (!$result['onlineStatus']) { // mark user as logged in.
+            $onlineStatus = 1;
+            $this->changeOnlineStatus($username, $onlineStatus);
+        }
+        // close connections.
+//        $dbConn->close();
         return $result;
+    }
+
+    function changeOnlineStatus($username, $status) {
+        global $dbConn;
+        if (!($updateStatus = $dbConn->prepare("UPDATE users SET OnlineStatus = ? WHERE Username = ?"))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$updateStatus->bind_param("ss", $status, $username)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+
+        if (!$updateStatus->execute()) {
+            echo "error executing: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        //close connections.
+        $updateStatus->close();
+        $dbConn->close();
     }
 
     function register($lastName, $firstName, $username, $password, $userType, $userShift) {
         global $dbConn;
         $result = ["username" => NULL];
-
-        echo $lastName, $firstName, $username, $password, $userType, $userShift;
 
         if (!($stmt = $dbConn->prepare("INSERT INTO users(Last_Name,First_Name,Username,Password,userType,Shift) "
                 . "VALUES (?,?,?,?,?,?)"))) {
@@ -59,7 +83,6 @@ class DBHandler {
         }
 
         if (!$stmt->execute()) {
-//            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
             return $result;
         }
         $result["username"] = $username;
@@ -88,11 +111,10 @@ class DBHandler {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
         if (!$stmt->execute()) {
-//            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
             return $result;
         }
 
-        $stmt->bind_result($id, $lastName, $firstName, $username, $password, $type, $shift, $registrationDate);
+        $stmt->bind_result($id, $lastName, $firstName, $username, $password, $type, $shift, $registrationDate, $onlineStatus);
 
         while ($stmt->fetch()) {
             // create an array with the record
@@ -103,7 +125,8 @@ class DBHandler {
                 "password" => $password,
                 "type" => $type,
                 "shift" => $shift,
-                "Registration" => $registrationDate];
+                "Registration" => $registrationDate,
+                "OnlineStatus" => $onlineStatus];
             // push the record into the user
             array_push($users, $tmp);
         }
@@ -121,7 +144,7 @@ class DBHandler {
             "shift" => NULL,
             "Registration" => NULL];
 
-        $query = "SELECT Last_Name,First_Name,Username,Password,userType,Shift,registrationDate "
+        $query = "SELECT Last_Name,First_Name,Username,Password,userType,Shift,RegistrationDate "
                 . "FROM users "
                 . "WHERE id=?";
 
@@ -162,10 +185,31 @@ class DBHandler {
             echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         }
         if (!$stmt->execute()) {
-//            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
             return $result;
         }
         $result["response"] = 1;
+
+        $dbConn->close();
+        $stmt->close();
+        return $result;
+    }
+
+    function removeUser($id) {
+        global $dbConn;
+        $result = ["response" => null];
+        $query = "DELETE FROM users WHERE ID = ? ";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->bind_param("s", $id)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return $result;
+        }
+        $result["response"] = "success";
 
         $dbConn->close();
         $stmt->close();

@@ -20,6 +20,7 @@
                         <th class="text-center">Username</th>
                         <th class="text-center">Type</th>
                         <th class="text-center">Shift</th>
+                        <th class="text-center">Status</th>
                     </tr>
                 </thead>
                 <!--retrieve all users in the base and populate the table.-->
@@ -30,6 +31,9 @@
                         <td class="col-md-2 text-center"> {{u.username}}</td>
                         <td class="col-md-2 text-center"> {{u.type}}</td>
                         <td class="col-xs-1 text-center"> {{u.shift}}</td>
+                        <td class = "col-xs-1 text-center" > 
+                            <img src="{{u.status}}" style ="max-height:20px; max-width:100%"> 
+                        </td>
                         <td class="col-sm-1 text-center">  
                             <a href="#/editUser/{{u.id}}" class="btn btn-primary btn-xs">Edit</a>
                         </td>
