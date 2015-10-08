@@ -68,7 +68,18 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
-
+    function addDocument($documentName, $userShift){
+        global $dbConn;
+        $date = date('Y-m-d');
+        $result = ["response" => null];
+        $query = "INSERT INTO documents(DocumentName, UploadDate, Shift) VALUES ('".$documentName."',".$date.",'".$userShift."')";
+        if (mysqli_query($dbConn, $query)) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $query . "<br>" . mysqli_error($dbConn);
+        }
+        return TRUE;
+    }
     function getUsers() {
         global $dbConn;
 

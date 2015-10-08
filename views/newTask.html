@@ -6,11 +6,25 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Upload a new Task Doc</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div>new task Page here</div>
+    <form method="POST" enctype="multipart/form-data" action="../php/upload.php">
+        <input type="file" name="task"><br>
+        <div>
+            <select name="userShift" class="userSelect">
+                <option value="" disabled selected style="display: none;">Select officer Shift</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+        </div>
+        <input type="submit" name="submit" value="Upload Now">
+    </form>
     </body>
 </html>

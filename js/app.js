@@ -19,6 +19,9 @@ app.config(function ($routeProvider) { //$routeProvider defines the application 
             .when('/viewLogs', {
                 templateUrl: '../views/viewLogs.html'
             })
+            .when('/pinTask', {
+                templateUrl: '../views/pinTask.html'
+            })
             .when('/newTask', {
                 templateUrl: '../views/newTask.html'
             }) //Other users profiles
