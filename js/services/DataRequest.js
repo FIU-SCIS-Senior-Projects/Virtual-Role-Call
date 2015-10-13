@@ -19,7 +19,24 @@ login.factory('DataRequest', function ($http, $q) {
         }
     };
 });
-
+supervisor.factory('DataRequest', function ($http, $q) {
+    return{
+        uploadTask: function (documentName, userShift, category){
+            function promiseExecutor(resolve, reject){
+                $http.post("upload.php", {
+                    "documentName": documentName,
+                    "userShift":documentName,
+                    "category":category})
+                    .then(function (data){
+                        resolve(data.data);
+                    },function (error){
+                        reject(error);
+                    });
+                return $q(promiseExecutor);
+            }
+        }
+    }
+});
 // module for the rest of the rest of the system.
 admin.factory('DataRequest', function ($http, $q) {
 

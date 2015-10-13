@@ -91,17 +91,20 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
-    function addDocument($documentName, $userShift){
+    function addDocument($documentName, $userShift, $category){
         global $dbConn;
-        $date = date('Y-m-d');
-        $result = ["response" => null];
-        $query = "INSERT INTO documents(DocumentName, UploadDate, Shift) VALUES ('".$documentName."',".$date.",'".$userShift."')";
-        if (mysqli_query($dbConn, $query)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $query . "<br>" . mysqli_error($dbConn);
+        if(!($stmt = $dbConn->prepare("INSERT INTO documents(DocumentName, UserShift, Category) VALUES (?,?,?)"))){
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
-        return TRUE;
+        if (!$stmt->bind_param("sss", $documentName, $userShift, $category)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            echo "Execution Failure";
+        }
+        // close connections.
+        $dbConn->close();
+        $stmt->close();
     }
     function getUsers() {
         global $dbConn;

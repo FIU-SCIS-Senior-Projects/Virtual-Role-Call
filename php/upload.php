@@ -1,13 +1,12 @@
 <?php
 
 require_once('DbHandler.php');
-$userShift = $_POST["userShift"];
-$target_dir = "../uploads/";
-$uploadedFileName = $target_dir . basename($_FILES["task"]["name"]);
+$postdata = file_get_contents("php://input");
+$request = json_decode($postdata);
 
-$uploadResult = move_uploaded_file($_FILES["task"]["tmp_name"], $uploadedFileName);
-$conn = new DBHandler();
+$documentName = $request->documentName;
+$userShift = $request->userShift;
+$Category = $request->category;
 
-$result = $conn->addDocument($uploadedFileName, $userShift);
-
-?>
+$connection = new DBHandler();
+$res = $connection->addDocument($documentName,$userShift,$category);
