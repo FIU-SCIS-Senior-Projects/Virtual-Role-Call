@@ -1,4 +1,4 @@
-/* global admin, login */
+/* global admin, login, officer */
 
 //module for login
 login.factory('DataRequest', function ($http, $q) {
@@ -18,7 +18,7 @@ login.factory('DataRequest', function ($http, $q) {
             return $q(promiseExecutor); // this function will determine when the function is finished.
         }
     };
-});
+}); // Login Factory
 
 // module for the rest of the rest of the system.
 admin.factory('DataRequest', function ($http, $q) {
@@ -95,6 +95,37 @@ admin.factory('DataRequest', function ($http, $q) {
                         });
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
-        }
+        },
     };
-});
+}); // Admin Factory
+
+officer.factory('DataRequest', function ($http, $q) {
+
+    return {
+        retrieveDocs: function (taskType, shift) {
+            function promiseExecutor(resolve, reject) {
+                $http.post("retrieveDocs.php",
+                        {"taskType": taskType,
+                            "shift": shift})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
+        retrieveTasks: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("retrieveTasks.php", {})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
+    };
+}); // Officer Factory
+ 

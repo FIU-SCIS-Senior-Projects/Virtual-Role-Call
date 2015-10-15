@@ -2,7 +2,7 @@
 
 var login = angular.module('VRC_Login', []); // module for login
 var admin = angular.module('adminModule', ['ngRoute', 'ngIdle', 'ui.bootstrap']); // module for the rest fo system.
-var officer = angular.module('officerModule', ['ngIdle', 'ui.bootstrap']);
+var officer = angular.module('officerModule', ['ngRoute', 'ngIdle', 'ui.bootstrap']);
 
 admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines the application routes.
     $routeProvider
@@ -41,3 +41,16 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
 
 });
 
+officer.config(function ($routeProvider, IdleProvider) {
+    $routeProvider
+            .when('/viewDocs', {
+                templateUrl: '../views/taskDocs.html',
+                scope: '$rootScope'
+            })
+//            .otherwise({
+//                redirectTo: '/viewDocs'
+//            });
+    // time is in seconds.
+    IdleProvider.idle(5 * 60); // amount of time to wait while the user is iddle
+    IdleProvider.timeout(5); // Warning time.
+});

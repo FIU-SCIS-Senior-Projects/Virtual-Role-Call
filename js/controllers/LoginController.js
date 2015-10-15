@@ -15,7 +15,6 @@ login.controller('LoginController', ['$scope', 'DataRequest', '$window',
                 $scope.message = "*Username or password not entered.";
             } else {
                 // password is encrypted in the database. Every encryption is different.
-
                 DataRequest.login(username).then(function (data) {
 
                     if (data['username'] !== null) {
@@ -30,7 +29,9 @@ login.controller('LoginController', ['$scope', 'DataRequest', '$window',
 //                            } else {
                             var userType = data['type'];
                             var username = data['username'];
-                            window.location.href = "php/Session.php?username=" + username + "&type=" + userType;
+                            var shift = data['shift'];
+
+                            window.location.href = "php/Session.php?username=" + username + "&type=" + userType + "&shift=" + shift;
 //                            }
                         } else {// credentials are invalid
                             $scope.message = "Invalid credentials. Try Again!";

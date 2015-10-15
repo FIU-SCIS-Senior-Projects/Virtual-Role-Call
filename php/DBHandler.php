@@ -23,10 +23,11 @@ class DBHandler {
         $result = ["username" => NULL,
             "password" => NULL,
             "type" => NULL,
-            "onlineStatus" => NULL
+            "onlineStatus" => NULL,
+            "shift" => NULL
         ];
 
-        $stmt = $dbConn->prepare("SELECT username,password,userType,onlineStatus"
+        $stmt = $dbConn->prepare("SELECT username,password,userType,onlineStatus,shift"
                 . " FROM users WHERE username=?");
         if (!$stmt) {
             return -1;
@@ -34,7 +35,7 @@ class DBHandler {
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
-        $stmt->bind_result($result['username'], $result['password'], $result['type'], $result['onlineStatus']);
+        $stmt->bind_result($result['username'], $result['password'], $result['type'], $result['onlineStatus'], $result['shift']);
         // no results found.
         if (!$stmt->fetch()) {
             return $result;
@@ -51,6 +52,7 @@ class DBHandler {
         return $result;
     }
 
+    // helper method to change the login status of a user.
     function changeOnlineStatus($username, $status) {
         global $dbConn;
         if (!($updateStatus = $dbConn->prepare("UPDATE users SET OnlineStatus = ? WHERE Username = ?"))) {
@@ -203,6 +205,61 @@ class DBHandler {
         $dbConn->close();
         $stmt->close();
         return $result;
+    }
+
+    function retrieveDocs($taskType, $userShift) {
+        global $dbConn;
+
+        $docs = [];
+        $query = "SELECT documentName,category from documents WHERE category =? AND userShift =?";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->bind_param("ss", $taskType, $userShift)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return $docs;
+        }
+
+        $stmt->bind_result($docName, $category);
+
+        while ($stmt->fetch()) {
+            // create an array with the record
+            $doc = ["docName" => $docName,
+                "category" => $category];
+
+            // push the record into the user
+            array_push($docs, $doc);
+        }
+        return $docs;
+    }
+
+    function retrieveTasks() {
+        global $dbConn;
+
+        $docs = [];
+        $query = "SELECT taskName FROM tasks";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->execute()) {
+            return $docs;
+        }
+
+        $stmt->bind_result($taskName);
+
+        while ($stmt->fetch()) {
+            // create an array with the record
+            $doc = ["taskName" => $taskName];
+            // push the record into the user
+            array_push($docs, $doc);
+        }
+        return $docs;
     }
 
 }
