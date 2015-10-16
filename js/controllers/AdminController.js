@@ -131,7 +131,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
                                 displayMessage(username + " has been sucessfully registered.");
                                 //wait 2 seconds.
                                 setTimeout(function () {
-                                    //reload page after 2 seconds of sucessul registration.
+                                    //reload page after 2 seconds of sucessful registration.
                                     window.location.reload();
                                 }, 2000);
                             }

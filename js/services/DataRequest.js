@@ -7,40 +7,44 @@ login.factory('DataRequest', function ($http, $q) {
         login: function (username, password) {
 
             function promiseExecutor(resolve, reject) {
-                $http.post("php/login.php", {"username": username,
-                    "password": password})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                $http.post("php/login.php", {
+                    "username": username,
+                    "password": password
+                })
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
+
             return $q(promiseExecutor); // this function will determine when the function is finished.
         }
     };
 });
 supervisor.factory('DataRequest', function ($http, $q) {
-    return{
-        uploadTask: function (documentName, userShift, category){
-            function promiseExecutor(resolve, reject){
+    return {
+        addTask: function (userShift, category) {
+            function promiseExecutor(resolve, reject) {
                 $http.post("upload.php", {
-                    "documentName": documentName,
-                    "userShift":documentName,
-                    "category":category})
-                    .then(function (data){
+                    "userShift": userShift,
+                    "category": category
+                })
+                    .then(function (data) {
                         resolve(data.data);
-                    },function (error){
+                    }, function (error) {
                         reject(error);
                     });
-                return $q(promiseExecutor);
             }
+
+            return $q(promiseExecutor);
         }
     }
 });
 // module for the rest of the rest of the system.
 admin.factory('DataRequest', function ($http, $q) {
 
-    return{
+    return {
         register: function (lastName, firstName, username, encryptedPass, userType, userShift) {
 
             function promiseExecutor(resolve, reject) {
@@ -50,36 +54,40 @@ admin.factory('DataRequest', function ($http, $q) {
                     "username": username,
                     "password": encryptedPass,
                     "userType": userType,
-                    "userShift": userShift})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                    "userShift": userShift
+                })
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
+
             return $q(promiseExecutor); // this function will determine when the function is finished.
         },
         getRegisteredUsers: function () {
 
             function promiseExecutor(resolve, reject) {
                 $http.post("getUsers.php", {})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
+
             return $q(promiseExecutor); // this function will determine when the function is finished.
         },
         getUser: function (id) {
             function promiseExecutor(resolve, reject) {
                 $http.post("getUser.php", {id: id})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
+
             return $q(promiseExecutor); // this function will determine when the function is finished.
         },
         save: function (id, lastName, firstName, username, password, type, shift) {
@@ -93,25 +101,28 @@ admin.factory('DataRequest', function ($http, $q) {
                     "username": username,
                     "password": password,
                     "userType": type,
-                    "userShift": shift})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                    "userShift": shift
+                })
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
-            return $q(promiseExecutor); // this function will determine when the function is finished.      
+
+            return $q(promiseExecutor); // this function will determine when the function is finished.
         },
         removeUser: function (id) {
             function promiseExecutor(resolve, reject) {
                 $http.post("removeUser.php", {"id": id})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
             }
-            return $q(promiseExecutor); // this function will determine when the function is finished. 
+
+            return $q(promiseExecutor); // this function will determine when the function is finished.
         }
     };
 });

@@ -21,7 +21,7 @@ $login_session = $_SESSION['user_Session'];
         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.js"></script>
 
         <!-- CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/admin.css"/>
+        <link type="text/css" rel="stylesheet" href="../css/supervisor.css"/>
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
 
@@ -48,7 +48,7 @@ $login_session = $_SESSION['user_Session'];
                                 <li class="dropdown dropdown-submenu">
                                     <a class="dropdown-toggle" data-toggle="dropdown">View as</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="Supervisor_Profile.php">View As Supervisor</a></li>
+                                        <li><a href="./Supervisor_Profile.php#/">View As Supervisor</a></li>
                                         <li><a href="Officer_Profile.php">View As Officer</a></li>
                                     </ul>
                                 </li>

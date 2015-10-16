@@ -17,15 +17,15 @@ body{
     background: linear-gradient(#384047, black);
     /*overflow:hidden;*/
     width: 615px;
-    margin: auto; //center the navbar 
+    margin: auto; //center the navbar
     /*background-color:transparent;*/
-    color:purple;
+color:purple;
 }
 
 
 /* #####################  SUBMENU #########*/
 .marginBottom-0 { // display submenu to the right of the parent menu.
-                  margin-bottom:0;
+margin-bottom:0;
 }
 
 .dropdown-menu{
@@ -128,7 +128,7 @@ button {
 }
 
 .userSelect{
-    max-width:49%;  
+    max-width:96%;
 }
 /*###################################################################*/
 
@@ -138,5 +138,24 @@ table {
 }
 
 tbody td, thead th {
-    font-size: 18px       
+    font-size: 18px
+}
+#fileBox{
+    position: relative;
+    overflow: hidden;
+}
+.btn-upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
 }

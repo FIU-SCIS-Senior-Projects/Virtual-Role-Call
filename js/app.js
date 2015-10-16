@@ -3,7 +3,7 @@
 var login = angular.module('VRC_Login', []); // module for login
 var admin = angular.module('adminModule', ['ngRoute', 'ngIdle', 'ui.bootstrap']); // module for the rest fo system.
 var officer = angular.module('officerModule', ['ngIdle', 'ui.bootstrap']);
-var supervisor = angular.module('supervisorModule', ['ngIdle', 'ui.bootstrap']);
+var supervisor = angular.module('supervisorModule', ['ngRoute','ngIdle', 'ui.bootstrap']);
 
 admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines the application routes.
     $routeProvider
@@ -50,7 +50,7 @@ supervisor.config(function ($routeProvider, IdleProvider) {
             templateUrl: '../views/newTask.html'
         })
         .when('/pinTask', {
-            templateUrl: '../views/newTask.html'
+            templateUrl: '../views/pinTask.html'
         })
         .otherwise({
             redirectTo:'/newTask'

@@ -18,13 +18,12 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
             });
         })(jQuery);
         $scope.addTask = function(){
-            var task = this.task;
             var userShift = this.userShift;
             var category = this.category;
-            if(!(task && userShift && category)){
+            if(!(userShift && category)){
                 this.message = "*Please complete all fields.";
             }else{
-                DataRequest.addTask(task,userShift,category);
+                DataRequest.addTask(userShift,category);
             }
         }
         //      **************** monitoring idle user ************ ****
