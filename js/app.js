@@ -47,10 +47,10 @@ officer.config(function ($routeProvider, IdleProvider) {
                 templateUrl: '../views/taskDocs.html',
                 scope: '$rootScope'
             })
-//            .otherwise({
-//                redirectTo: '/viewDocs'
-//            });
+            .otherwise({
+                redirectTo: '/viewDocs'
+            });
     // time is in seconds.
-    IdleProvider.idle(5 * 60); // amount of time to wait while the user is iddle
+    IdleProvider.idle(60 * 60); // amount of time to wait while the user is iddle
     IdleProvider.timeout(5); // Warning time.
 });

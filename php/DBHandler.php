@@ -229,8 +229,8 @@ class DBHandler {
         while ($stmt->fetch()) {
             // create an array with the record
             $doc = ["docName" => $docName,
-                "category" => $category];
-
+                "category" => $category
+            ];
             // push the record into the user
             array_push($docs, $doc);
         }

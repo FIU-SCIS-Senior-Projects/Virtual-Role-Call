@@ -720,3 +720,55 @@ input[type="radio"] + label:before {
 .modal.in .modal-dialog {
     transform: none; /*translate(0px, 0px);*/
 }
+
+
+.exit-btn:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.exit-btn { 
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 15px 30px;
+    display: inline-block;
+    margin: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s; 
+}
+.exit-btn-2 {
+    padding: 10px 25px 10px 40px;
+    border-radius: 15px;
+}
+.exit-btn-2 {
+    background-color: #6f5499;
+    color: #fff;
+    float: right
+}
+.exit-btn-2:before {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    line-height: 3;
+    font-size: 100%;
+    width: 40px;
+}
+.exit-btn-2:before {
+    border-right: 2px solid rgba(255,255,255,0.5);
+    content: "\e017";
+    font-family: 'Glyphicons Halflings';
+}

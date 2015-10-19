@@ -26,6 +26,9 @@ session_start();
 
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
+
+        <!-- PDF Js-->
+        <!--<script src="https://raw.github.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>-->
     </head>
     <body ng-app="officerModule">
 
@@ -34,7 +37,9 @@ session_start();
         <div class="container"> 
 
             <br>
-            <b><a style="float:  right" href="logout.php">Log Out</a></b>
+
+            <a href="logout.php"  class="exit-btn exit-btn-2" >Log out </a>
+
             <div ng-controller="OfficerController">
                 <div ng-init="start()"> <!-- Being monitoring Idle User-->
                     <div ng-init="retrieveTasks()"> <!-- Being retrieving tasks and monitor idle user-->
@@ -66,6 +71,16 @@ session_start();
             You'll be logged out in {{countdown}} second(s).
             </progressbar>
             </div>
+        </script>        
+
+        <!--this modal is used for notification purposes-->
+        <script type="text/ng-template" id="notification.html">
+            <div class="modal-content">              
+            <div class="modal-body">
+            <h3>Information</h3>
+            <h4 style="color:red; text-align:center">{{message}}</h4>
+            </div>       
+            </div>
         </script>
 
         <!--modules-->
@@ -75,6 +90,6 @@ session_start();
         <!-- Services -->
         <script src = "../js/services/DataRequest.js"></script>
 
-        <!--<b id="welcome">Welcome : <i><?php // echo "Hello"              ?></i></b>-->
+        <!--<b id="welcome">Welcome : <i><?php // echo "Hello"                           ?></i></b>-->
     </body>
 </html>

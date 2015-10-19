@@ -3,8 +3,6 @@
 
 officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Idle', '$modal',
     function ($scope, DataRequest, window, Idle, $modal) {
-//        , 'DataRequest', '$routeParams', 'Idle', '$modal'
-//, DataRequest, $routeParams, Idle, $modal
 
         $scope.retrieveTasks = function () {
             DataRequest.retrieveTasks().then(function (data) {
@@ -13,7 +11,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 console.log("Error: " + error);
             });
         };
-
         $scope.retrieveDocs = function (taskType, shift) {
             DataRequest.retrieveDocs(taskType, shift).then(function (data) {
                 $scope.documents = data;
@@ -22,7 +19,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 console.log("Error: " + error);
             });
         };
-
         //      **************** monitoring idle user ************ ****
 
         $scope.started = false;
@@ -53,7 +49,7 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
         // idle timeout. sign user out.
         $scope.$on('IdleTimeout', function () { // Timed out.
             closeModals();
-            window.location.href = "../php/logout.php";  //Log the user out.
+            window.location.href = "../php/logout.php"; //Log the user out.
         });
         // begin idle time monitoring.
         $scope.start = function () {
@@ -61,8 +57,18 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             Idle.watch(); // begin monitoring.
             $scope.started = true;
         };
-//  ****************************************************************
 
+
+        //display messages through a modal to notify users of an event.
+        function displayMessage(message) {
+            $scope.message = message;
+            $scope.msgModal = $modal.open({
+                templateUrl: 'notification.html',
+                windowClass: 'modal-danger',
+                scope: $scope
+            });
+        }
+//  ****************************************************************
 
         (function (a) {
             a.createModal = function (b) {
@@ -75,7 +81,7 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 var b = a.extend({}, defaults, b);
                 var c = (b.scrollable === true) ? 'style="max-height: 420px;overflow-y: auto;"' : "";
                 html = '<div class="modal fade" id="myModal">';
-                html += '<div class="modal-dialog">';
+                html += '<div class="modal-dialog modal-lg">';
                 html += '<div class="modal-content">';
 //                html += '<div class="modal-header">';
 //                html += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
@@ -86,68 +92,51 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 html += '<div class="modal-body" ' + c + ">";
                 html += b.message;
                 html += "</div>";
-                html += '<div class="modal-footer">';
-                if (b.closeButton === true) {
-                    html += '<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>';
-                }
                 html += "</div>";
                 html += "</div>";
-                html += "</div>";
-                html += "</div>";
+                html += "</div>"; // 
+
                 a("body").prepend(html);
                 a("#myModal").modal().on("hidden.bs.modal", function () {
                     a(this).remove();
                 });
             };
         })(jQuery);
-
         //displaying pdf document in a modal.
         $scope.viewDoc = function (category, docName) {
-            var pdfDoc = "../uploads/" + category + "/" + docName;
+            var iframe;
+            // Internet reads a space as %20
+            docName = docName.replace(" ", "%20");
+            category = category.replace(" ", "%20");
             //Find the document type.
             var contents = docName.split(".");
             var docType = contents[contents.length - 1 ];
+            var documentUrl = "http://" + location.host + "/VirtualRollCall/uploads/" + category + "/" + docName;
 
-            if (docType === "pdf") {
-                var iframe = '<object type="application/' + docType + '" data="' + pdfDoc + '" width="100%" height="650">No Support</object>';
+            //check if the file is supported by the system.
+            if (isSupported(docType)) {
+
+                if (docType === "pdf") { //document is pdf.
+                    iframe = '<iframe width="100%" height="600px" \n\
+                src= "../js/vendor/web/viewer.html?file=' + documentUrl + '" ></iframe>';
+                }   //video. mp4 
+                else if (docType === "mp4") {
+                    iframe = '<iframe <video src="' + documentUrl + '" type="video/mp4"/></iframe>';
+                }
+                //display the modal with the information.
                 $.createModal({
 //                title: 'My Title',
                     message: iframe,
                     closeButton: true,
                     scrollable: false
                 });
-            } else { //not a pdf document.
-                
-//                var microsoftDoc = location.host + "/VirtualRollCall/uploads/" + category + "/" + docName;
-//                var fullLink =    'https://docs.google.com/viewer?url=' + microsoftDoc; 
-//                console.log(microsoftDoc);
-//                
-//                href = microsoftDoc;
-//                var iframe = '<object type="application/' + docType + '" data="' + fullLink + '" width="100%" height="650">No Support</object>';
-                        
-//                $.createModal({
-////                title: 'My Title',
-//                    message: iframe,
-//                    closeButton: true,
-//                    scrollable: false
-//                });
-                
-//                var microsoftDoc = location.host + "/VirtualRollCall/uploads/" + category + "/" + docName;
-//                window.open(
-//                        'https://docs.google.com/viewer?url=' + microsoftDoc,
-//                        '_blank' // <- This is what makes it open in a new window.
-//                        );
+            } else {
+                displayMessage("This file is not currently supported.");
             }
-
-//            var iframe = '<object type="application/' + docType + '" data="' + docLink + '" width="100%" height="650">No Support</object>';
-//            $.createModal({
-////                title: 'My Title',
-//                message: iframe,
-//                closeButton: true,
-//                scrollable: false
-//            });
         };
 
+        //any supported extensions are included here.
+        function isSupported(extension) {
+            return extension === "pdf" || extension === "mp4";
+        }
     }]);
-
-    
