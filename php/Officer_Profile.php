@@ -44,7 +44,7 @@ session_start();
                 <div ng-init="start()"> <!-- Being monitoring Idle User-->
                     <div ng-init="retrieveTasks()"> <!-- Being retrieving tasks and monitor idle user-->
                         <section>
-                            <h1 class="customText">Tasks</h1>
+                            <h1 class="customText">Categories</h1>
                             <div class="row">
                                 <article class="4u" ng-repeat="t in tasks">
                                     <h5 class="customText">{{t.taskName}}</h5>

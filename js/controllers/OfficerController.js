@@ -15,6 +15,8 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             DataRequest.retrieveDocs(taskType, shift).then(function (data) {
                 $scope.documents = data;
                 window.location.href = "#/viewDocs";
+                
+                $scope.category = taskType;
             }, function (error) {
                 console.log("Error: " + error);
             });
