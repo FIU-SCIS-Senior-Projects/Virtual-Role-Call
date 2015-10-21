@@ -42,20 +42,8 @@ session_start();
 
             <div ng-controller="OfficerController">
                 <div ng-init="start()"> <!-- Being monitoring Idle User-->
-                    <div ng-init="retrieveTasks()"> <!-- Being retrieving tasks and monitor idle user-->
-                        <section>
-                            <h1 class="customText">Categories</h1>
-                            <div class="row">
-                                <article class="4u" ng-repeat="t in tasks">
-                                    <h5 class="customText">{{t.taskName}}</h5>
-                                    <a class="image fit thumb" ng-click="retrieveDocs(t.taskName, 'C')">
-                                        <img src="../img/taskBackground.jpg" alt="" />
-                                    </a>
-                                </article>
-                            </div>
-                        </section>
-                    </div>
-                    <ng-view></ng-view> <!-- Display documents of the tasks.-->
+
+                    <ng-view></ng-view> 
                 </div> <!-- Idle user -->
             </div> 
         </div> <!-- Container -->
@@ -90,6 +78,5 @@ session_start();
         <!-- Services -->
         <script src = "../js/services/DataRequest.js"></script>
 
-        <!--<b id="welcome">Welcome : <i><?php // echo "Hello"                           ?></i></b>-->
     </body>
 </html>

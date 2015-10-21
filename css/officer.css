@@ -737,9 +737,8 @@ input[type="radio"] + label:before {
     color: inherit;
     background: none;
     cursor: pointer;
-    padding: 15px 30px;
     display: inline-block;
-    margin: 15px 30px;
+    margin: 10px 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
@@ -750,8 +749,8 @@ input[type="radio"] + label:before {
     transition: all 0.3s; 
 }
 .exit-btn-2 {
-    padding: 10px 25px 10px 40px;
-    border-radius: 15px;
+    padding: 5px 5px 4px 20px;
+    border-radius: 10px;
 }
 .exit-btn-2 {
     background-color: #6f5499;
@@ -764,11 +763,11 @@ input[type="radio"] + label:before {
     left: 0;
     top: 0;
     line-height: 3;
-    font-size: 100%;
-    width: 40px;
+    font-size: 75%;
+    width: 15px;
 }
 .exit-btn-2:before {
-    border-right: 2px solid rgba(255,255,255,0.5);
+    border-right: 1px solid rgba(255,255,255,0.5);
     content: "\e017";
     font-family: 'Glyphicons Halflings';
 }

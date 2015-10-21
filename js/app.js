@@ -35,7 +35,7 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
             });
 
     // time is in seconds.
-    IdleProvider.idle(5 * 60); // amount of time to wait while the user is iddle
+    IdleProvider.idle(15 * 60); // amount of time to wait while the user is iddle
     IdleProvider.timeout(5); // Warning time.
 //    KeepaliveProvider.interval(10);
 
@@ -43,14 +43,18 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
 
 officer.config(function ($routeProvider, IdleProvider) {
     $routeProvider
+            .when('/viewCategories', {
+                templateUrl: '../views/categories.html',
+//                scope: '$rootScope'
+            })
             .when('/viewDocs', {
                 templateUrl: '../views/taskDocs.html',
-                scope: '$rootScope'
+//                scope: '$rootScope'
             })
             .otherwise({
-                redirectTo: '/viewDocs'
+                redirectTo: '/viewCategories'
             });
     // time is in seconds.
-    IdleProvider.idle(60 * 60); // amount of time to wait while the user is iddle
+    IdleProvider.idle(15 * 60); // amount of time to wait while the user is iddle
     IdleProvider.timeout(5); // Warning time.
 });

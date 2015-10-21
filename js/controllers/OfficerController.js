@@ -15,7 +15,7 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             DataRequest.retrieveDocs(taskType, shift).then(function (data) {
                 $scope.documents = data;
                 window.location.href = "#/viewDocs";
-                
+
                 $scope.category = taskType;
             }, function (error) {
                 console.log("Error: " + error);
@@ -60,7 +60,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             $scope.started = true;
         };
 
-
         //display messages through a modal to notify users of an event.
         function displayMessage(message) {
             $scope.message = message;
@@ -85,12 +84,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 html = '<div class="modal fade" id="myModal">';
                 html += '<div class="modal-dialog modal-lg">';
                 html += '<div class="modal-content">';
-//                html += '<div class="modal-header">';
-//                html += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-//                if (b.title.length > 0) {
-//                    html += '<h4 class="modal-title">' + b.title + "</h4>";
-//                }
-//                html += "</div>";
                 html += '<div class="modal-body" ' + c + ">";
                 html += b.message;
                 html += "</div>";
@@ -127,7 +120,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 }
                 //display the modal with the information.
                 $.createModal({
-//                title: 'My Title',
                     message: iframe,
                     closeButton: true,
                     scrollable: false
