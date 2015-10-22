@@ -50,7 +50,7 @@ supervisor.config(function ($routeProvider, IdleProvider) {
             templateUrl: '../views/newTask.html'
         })
         .when('/pinTask', {
-            templateUrl: '../views/pinTask.html'
+            templateUrl: '../views/dndNewTask.html'
         })
         .otherwise({
             redirectTo:'/newTask'
