@@ -1,12 +1,14 @@
 <?php
-//$login_session = 'Frank';
+session_start();
+//echo $_SESSION["user_Session"];
+//echo $_SESSION["user_Shift"];
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Officer Home Page</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> <!--ANGULAR-->
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> <!--ANGULAR-->
         <script src="https://code.angularjs.org/1.2.28/angular-route.min.js"></script> <!--ROUTING-->
 
         <!-- jquery-->
@@ -24,31 +26,57 @@
 
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
+
+        <!-- PDF Js-->
+        <!--<script src="https://raw.github.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>-->
     </head>
     <body ng-app="officerModule">
 
-        <h1 id="customText">Officer Profile page.</h1>
+        <h1 class="customText">Officer Profile page.</h1>
 
-        <div class="container">
-            <!--<b id="welcome">Welcome : <i><?php // echo "Hello"    ?></i></b>-->
-            <!--<br>-->
+        <div class="container"> 
 
-            <section ng-controller="OfficerController">
-                <h1 id="customText">Tasks</h1>
-                <div class="row">
-                    <article class="4u" ng-repeat="t in tasks">
-                        <h2 id="customText">{{t.taskName}}</h2>
-                        <a href="{{t.url}}" class="image fit thumb">
-                            <img src="../img/taskBackground.jpg" alt="" />
-                        </a>
-                    </article>
-                </div>
-            </section>
+            <br>
 
-            <b id="logout"><a href="logout.php">Log Out</a></b>
-        </div>
+            <a href="logout.php"  class="exit-btn exit-btn-2" >Log out </a>
 
-        <script src="../js/app.js"></script>
+            <div ng-controller="OfficerController">
+                <div ng-init="start()"> <!-- Being monitoring Idle User-->
+
+                    <ng-view></ng-view> 
+                </div> <!-- Idle user -->
+            </div> 
+        </div> <!-- Container -->
+
+
+        <!--This modal will be displayed if the user is idle for too long.-->
+        <script type="text/ng-template" id="warning-dialog.html">
+            <div class="modal-header">
+            <h3>You have been idle for too long. You will be logged out!</h3>
+            </div>
+            <div idle-countdown="countdown" ng-init="countdown = 5" class="modal-body">
+            <progressbar max="5" value="5" animate="false" class="progress-striped active">
+            You'll be logged out in {{countdown}} second(s).
+            </progressbar>
+            </div>
+        </script>        
+
+        <!--this modal is used for notification purposes-->
+        <script type="text/ng-template" id="notification.html">
+            <div class="modal-content">              
+            <div class="modal-body">
+            <h3>Information</h3>
+            <h4 style="color:red; text-align:center">{{message}}</h4>
+            </div>       
+            </div>
+        </script>
+
+        <!--modules-->
+        <script src="../js/app.js"></script> 
+        <!--controllers-->
         <script src="../js/controllers/OfficerController.js"></script>
+        <!-- Services -->
+        <script src = "../js/services/DataRequest.js"></script>
+
     </body>
 </html>

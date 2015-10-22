@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Task Documents</title>
+    </head>
+    <body>
+
+        <h1 class="customText">{{category}}</h1>
+        <div class="1u" ng-repeat="doc in documents">
+
+            <a class="btn btn-primary " ng-click="viewDoc(doc.category, doc.docName)" >
+                <img src="../img/document.png"/>
+            </a>        
+            <h4 class="customText"> {{doc.docName}}</h4>
+        </div>
+
+    </body>
+    <a href="#/categories" class="btn btn-primary btn-lg">Return</a>
+
+</html>
