@@ -63,7 +63,7 @@ officer.config(function ($routeProvider, IdleProvider) {
 supervisor.config(function ($routeProvider, IdleProvider) {
     $routeProvider
         .when('/newTask', {
-            templateUrl: '../views/newTask.html'
+            templateUrl: '../views/dndNewTask.html'
         })
         .when('/pinTask', {
             templateUrl: '../views/dndNewTask.html'

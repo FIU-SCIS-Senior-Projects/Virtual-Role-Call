@@ -66,4 +66,3 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
         };
 //  ****************************************************************
     }]);
-

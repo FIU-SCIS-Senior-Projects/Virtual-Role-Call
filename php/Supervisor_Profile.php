@@ -24,6 +24,9 @@ $login_session = $_SESSION['user_Session'];
         <link type="text/css" rel="stylesheet" href="../css/supervisor.css"/>
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
+        <!--Drag and Drop script-->
+        <script src="../js/vendor/web/dropzone.js"></script>
+
 
     </head>
     <body ng-app="supervisorModule" class="container">
@@ -109,5 +112,6 @@ $login_session = $_SESSION['user_Session'];
         <script src="../js/controllers/SupervisorController.js"></script>
         <!-- Services -->
         <script src = "../js/services/DataRequest.js"></script>
+
     </body>
 </html>

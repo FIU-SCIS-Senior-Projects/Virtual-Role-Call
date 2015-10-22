@@ -106,6 +106,22 @@ admin.factory('DataRequest', function ($http, $q) {
         },
     };
 }); // Admin Factory
+supervisor.factory('DataRequest', function ($http, $q) {
+    return {
+        retrieveTasks: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("retrieveTasks.php", {})
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished.
+        },
+
+    };
+}); // Officer Factory
 
 officer.factory('DataRequest', function ($http, $q) {
 

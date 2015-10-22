@@ -2,7 +2,6 @@
 
 require_once('DbHandler.php');
 
-$postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 $userShift = $request->userShift;
 $category = $request->category;
@@ -18,3 +17,5 @@ if (move_uploaded_file($tmpFileName, $targetPath)) {
 //Updating Database
 $connection = new DBHandler();
 $res = $connection->addDocument($documentName,$userShift,$category);
+
+
