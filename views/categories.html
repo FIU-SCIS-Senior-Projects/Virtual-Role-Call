@@ -1,12 +1,12 @@
 
 
-<div ng-init="retrieveTasks()"> <!-- Being retrieving tasks and monitor idle user-->
+<div ng-init="retrieveCategories()"> <!-- Being retrieving tasks and monitor idle user-->
     <section>
         <h1 class="customText">Categories</h1>
         <div class="row">
-            <article class="4u" ng-repeat="t in tasks">
-                <h5 class="customText">{{t.taskName}}</h5>
-                <a class="image fit thumb" ng-click="retrieveDocs(t.taskName, 'C')">
+            <article class="4u" ng-repeat="c in categories">
+                <h5 class="customText">{{c.categoryName}}</h5>
+                <a class="image fit thumb" ng-click="retrieveDocs(c.categoryName, 'C')">
                     <img src="../img/taskBackground.jpg" alt="" />
                 </a>
             </article>

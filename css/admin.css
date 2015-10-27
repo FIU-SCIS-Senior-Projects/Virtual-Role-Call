@@ -140,3 +140,8 @@ table {
 tbody td, thead th {
     font-size: 18px       
 }
+
+.categoryContainer{
+    width: 615px;
+    margin:auto;
+}

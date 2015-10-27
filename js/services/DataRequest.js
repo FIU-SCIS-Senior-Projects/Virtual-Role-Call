@@ -96,6 +96,29 @@ admin.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
+        retrieveCategories: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("retrieveCategories.php", {})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
+        addNewCategory: function (categoryName) {
+            function promiseExecutor(resolve, reject) {
+                $http.post("newCategory.php", {
+                    "category": categoryName})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
     };
 }); // Admin Factory
 
@@ -115,9 +138,9 @@ officer.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
-        retrieveTasks: function () {
+        retrieveCategories: function () {
             function promiseExecutor(resolve, reject) {
-                $http.post("retrieveTasks.php", {})
+                $http.post("retrieveCategories.php", {})
                         .then(function (data) {
                             resolve(data.data);
                         }, function (error) {

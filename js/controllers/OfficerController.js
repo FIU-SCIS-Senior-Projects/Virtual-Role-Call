@@ -4,9 +4,9 @@
 officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Idle', '$modal',
     function ($scope, DataRequest, window, Idle, $modal) {
 
-        $scope.retrieveTasks = function () {
-            DataRequest.retrieveTasks().then(function (data) {
-                $scope.tasks = data;
+        $scope.retrieveCategories = function () {
+            DataRequest.retrieveCategories().then(function (data) {
+                $scope.categories = data;
             }, function (error) {
                 console.log("Error: " + error);
             });

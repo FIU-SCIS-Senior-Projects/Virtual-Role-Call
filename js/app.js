@@ -15,21 +15,22 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
             .when('/editUser/:id', {
                 templateUrl: '../views/Details.html'
             })
-            .when('/editArchive', {
-                templateUrl: '../views/editArchive.html'
-            })
+//            .when('/editArchive', {
+//                templateUrl: '../views/editArchive.html'
+//            })
             .when('/viewLogs', {
                 templateUrl: '../views/viewLogs.html'
             })
-            .when('/newTask', {
-                templateUrl: '../views/newTask.html'
+            .when('/categoryList', {
+                templateUrl: '../views/categoryList.html'
             }) //Other users profiles
-//            .when('/Supervisor', {
-//                templateUrl: './Supervisor_Profile.php'
-//            })
-//            .when('/Officer', {
-//                templateUrl: './Officer_Profile.php'
-//            })
+            .when('/Supervisor', {
+                templateUrl: './Supervisor_Profile.php'
+            })
+            .when('/Officer', {
+                templateUrl: './Officer_Profile.php'
+                 
+            })
             .otherwise({
                 redirectTo: '/register'
             });
