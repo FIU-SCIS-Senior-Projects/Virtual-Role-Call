@@ -53,7 +53,7 @@ $login_session = $_SESSION['user_Session'];
                                         <ul class="dropdown-menu">
                                             <li><a href="./Admin_Profile.php#/">View As Administrator</a></li>
                                             <li><a href="#/Supervisor">View As Supervisor</a></li>
-                                            <li><a href="#/Officer">View As Officer</a></li>
+                                            <li><a href="./Officer_Profile.php">View As Officer</a></li>
                                         </ul>
                                     </li>
                                     <li> 

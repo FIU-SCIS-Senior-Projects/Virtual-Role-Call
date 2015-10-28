@@ -149,6 +149,17 @@ officer.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
+        retrieveAddresses: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("addresses.php", {})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
     };
 }); // Officer Factory
  

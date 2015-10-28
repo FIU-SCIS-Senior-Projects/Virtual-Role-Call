@@ -27,10 +27,9 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
             .when('/Supervisor', {
                 templateUrl: './Supervisor_Profile.php'
             })
-            .when('/Officer', {
-                templateUrl: './Officer_Profile.php'
-                 
-            })
+//            .when('/Officer', {
+//                templateUrl: './Officer_Profile.php'        
+//            })
             .otherwise({
                 redirectTo: '/register'
             });
@@ -45,12 +44,14 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
 officer.config(function ($routeProvider, IdleProvider) {
     $routeProvider
             .when('/viewCategories', {
-                templateUrl: '../views/categories.html',
+                templateUrl: '../views/categories.html'
 //                scope: '$rootScope'
             })
             .when('/viewDocs', {
-                templateUrl: '../views/taskDocs.html',
-//                scope: '$rootScope'
+                templateUrl: '../views/taskDocs.html'
+            })
+            .when('/mapLocations', {
+                templateUrl: '../views/mapLocations.html'
             })
             .otherwise({
                 redirectTo: '/viewCategories'

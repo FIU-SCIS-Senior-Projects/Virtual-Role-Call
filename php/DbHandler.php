@@ -275,11 +275,44 @@ class DBHandler {
             echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         }
         if (!$stmt->execute()) {
-            return 0;
+            return -1;
         }
         //create the directory
         mkdir("../uploads/" . $categoryName);
-        return 1;
+        return 0;
+    }
+
+    function retrieveAddresses() {
+
+        global $dbConn;
+        $watchOrders = [];
+        $query = "SELECT address,city,state,zip,country,name,description "
+                . "FROM addresses WHERE dateDiff(addedDate,NOW()) >= validDays";
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->execute()) {
+            return $watchOrders;
+        }
+
+        $stmt->bind_result($address, $city, $state, $zip, $country, $name, $description);
+
+        while ($stmt->fetch()) {
+            // create an array with the record
+            $watchOrder = [
+                "address" => $address,
+                "city" => $city,
+                "state" => $state,
+                "zip" => $zip,
+                "country" => $country,
+                "name" => $name,
+                "description" => $description
+            ];
+            // push the record into the list of watch orders
+            array_push($watchOrders, $watchOrder);
+        }
+        return $watchOrders;
     }
 
 }

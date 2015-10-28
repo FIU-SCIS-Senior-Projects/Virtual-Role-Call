@@ -21,6 +21,33 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 console.log("Error: " + error);
             });
         };
+
+        $scope.loadLocations = function () {
+            DataRequest.retrieveAddresses().then(function (data) {
+
+                $scope.mapOptions = {
+                    zoom: 14,
+                    //Map fucus set up for Pinecrest.
+                    center: new google.maps.LatLng(25.662284, -80.307039)
+                };
+                //create the map
+                var map = new google.maps.Map(document.getElementById('googleMap'), $scope.mapOptions);
+
+                //create the markers with the address
+                var myLatLng = {lat: -25.363, lng: 131.044};
+                //add marker to the map created.
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: 'Hello World!'
+                });
+
+
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
+
         //      **************** monitoring idle user ************ ****
 
         $scope.started = false;

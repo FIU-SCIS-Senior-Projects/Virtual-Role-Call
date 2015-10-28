@@ -28,7 +28,8 @@ session_start();
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
 
-
+        <!-- Google maps -->
+        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
     </head>
     <body ng-app="officerModule">
 
