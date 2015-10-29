@@ -286,8 +286,8 @@ class DBHandler {
 
         global $dbConn;
         $watchOrders = [];
-        $query = "SELECT address,city,state,zip,country,name,description "
-                . "FROM addresses WHERE dateDiff(addedDate,NOW()) >= validDays";
+        $query = "SELECT address,city,state,zip,description "
+                . "FROM addresses WHERE dateDiff(addedDate,NOW()) <= validDays";
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
@@ -296,7 +296,7 @@ class DBHandler {
             return $watchOrders;
         }
 
-        $stmt->bind_result($address, $city, $state, $zip, $country, $name, $description);
+        $stmt->bind_result($address, $city, $state, $zip, $description);
 
         while ($stmt->fetch()) {
             // create an array with the record
@@ -305,8 +305,6 @@ class DBHandler {
                 "city" => $city,
                 "state" => $state,
                 "zip" => $zip,
-                "country" => $country,
-                "name" => $name,
                 "description" => $description
             ];
             // push the record into the list of watch orders

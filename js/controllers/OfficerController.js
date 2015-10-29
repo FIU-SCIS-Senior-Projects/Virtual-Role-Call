@@ -15,39 +15,51 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             DataRequest.retrieveDocs(taskType, shift).then(function (data) {
                 $scope.documents = data;
                 window.location.href = "#/viewDocs";
-
                 $scope.category = taskType;
             }, function (error) {
                 console.log("Error: " + error);
             });
         };
-
         $scope.loadLocations = function () {
             DataRequest.retrieveAddresses().then(function (data) {
 
+                // the map will focus on this location when opening. 
+                var mapFocus = {lat: 25.662284, lng: -80.307039}; // Pinecrest
                 $scope.mapOptions = {
                     zoom: 14,
-                    //Map fucus set up for Pinecrest.
-                    center: new google.maps.LatLng(25.662284, -80.307039)
+                    //Map focus set up for Pinecrest.
+                    center: new google.maps.LatLng(mapFocus)
                 };
                 //create the map
                 var map = new google.maps.Map(document.getElementById('googleMap'), $scope.mapOptions);
+                //create the geocoder for the map
+                geocoder = new google.maps.Geocoder();
 
-                //create the markers with the address
-                var myLatLng = {lat: -25.363, lng: 131.044};
-                //add marker to the map created.
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    title: 'Hello World!'
-                });
+                // loop through the addresses
+                for (var i = 0; i < data.length; i++) {
+                    var element = data[i];
+                    var description = element['description'];
+                    var geoOptions = {
+                        address: element['address'] + "," + element['city'] + "," + element['state'] + "," + element['zip']
+                    };
+                    geocoder.geocode(geoOptions, addMarker(description));
+                } //end of loop
 
-
+                function addMarker(myTitle) {
+                    return function (results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            new google.maps.Marker({
+                                map: map,
+                                position: results[0].geometry.location,
+                                title: myTitle
+                            });
+                        }
+                    };
+                }
             }, function (error) {
                 console.log("Error: " + error);
             });
         };
-
         //      **************** monitoring idle user ************ ****
 
         $scope.started = false;
@@ -86,7 +98,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             Idle.watch(); // begin monitoring.
             $scope.started = true;
         };
-
         //display messages through a modal to notify users of an event.
         function displayMessage(message) {
             $scope.message = message;
@@ -134,7 +145,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             var contents = docName.split(".");
             var docType = contents[contents.length - 1 ];
             var documentUrl = "http://" + location.host + "/VirtualRollCall/uploads/" + category + "/" + docName;
-
             //check if the file is supported by the system.
             if (isSupported(docType)) {
 
@@ -155,7 +165,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 displayMessage("This file is not currently supported.");
             }
         };
-
         //any supported extensions are included here.
         function isSupported(extension) {
             return extension === "pdf" || extension === "mp4";
