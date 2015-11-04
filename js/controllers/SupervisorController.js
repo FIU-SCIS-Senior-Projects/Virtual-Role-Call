@@ -4,7 +4,8 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
         //Supervisor options
         $scope.OptionsBar = [
             {name: 'Add Task', url: 'newTask'},
-            {name: 'Pin Task', url: 'pinTask'}
+            {name: 'Pin Task', url: 'pinTask'},
+            {name: 'View Pinned Tasks', url: ''}
         ];
         // For toggling the submenu (view as) for supervisor
         (function ($) {
@@ -22,10 +23,12 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
             var category = this.category;
             if(!(userShift && category)){
                 this.message = "*Please complete all fields.";
-            }else{
-                DataRequest.addTask(userShift,category);
             }
         }
+        //
+        $scope.validateTask = function(){
+
+        };
         //      **************** monitoring idle user ************ ****
 
         $scope.started = false;

@@ -63,10 +63,10 @@ officer.config(function ($routeProvider, IdleProvider) {
 supervisor.config(function ($routeProvider, IdleProvider) {
     $routeProvider
         .when('/newTask', {
-            templateUrl: '../views/dndNewTask.html'
+            templateUrl: '../views/newTask.html'
         })
         .when('/pinTask', {
-            templateUrl: '../views/dndNewTask.html'
+            templateUrl: '../views/pinTask.html'
         })
         .otherwise({
             redirectTo: '/newTask'

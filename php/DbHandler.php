@@ -93,12 +93,28 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
-    function addDocument($documentName, $userShift, $category){
+    function addTask($documentName, $userShift, $category){
         global $dbConn;
         if(!($stmt = $dbConn->prepare("INSERT INTO documents(DocumentName, UserShift, Category) VALUES (?,?,?)"))){
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
         if (!$stmt->bind_param("sss", $documentName, $userShift, $category)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            echo "Execution Failure";
+        }
+        // close connections.
+        $dbConn->close();
+        $stmt->close();
+    }
+    function pinTask($documentId){
+        global $dbConn;
+        if(!($stmt = $dbConn->prepare("INSERT INTO pinneddocuments(DocumentId, UserId) VALUES (?,?)"))){
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        $userId = "1";
+        if (!$stmt->bind_param("ss", $documentId, $userId)) {
             echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         }
         if (!$stmt->execute()) {
