@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 //echo $_SESSION["user_Session"];
@@ -27,17 +28,16 @@ session_start();
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
 
-        <!-- PDF Js-->
-        <!--<script src="https://raw.github.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>-->
+        <!-- Google maps -->
+        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
     </head>
     <body ng-app="officerModule">
 
-        <h1 class="customText">Officer Profile page.</h1>
+        <h1 class="customText">Virtual Roll Call</h1>
 
         <div class="container"> 
 
             <br>
-
             <a href="logout.php"  class="exit-btn exit-btn-2" >Log out </a>
 
             <div ng-controller="OfficerController">

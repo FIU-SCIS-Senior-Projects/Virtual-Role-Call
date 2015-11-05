@@ -7,33 +7,33 @@ var supervisor = angular.module('supervisorModule', ['ngRoute','ngIdle', 'ui.boo
 
 admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines the application routes.
     $routeProvider
-            .when('/register', {
-                templateUrl: '../views/register.html'
-            })
-            .when('/editUser', {
-                templateUrl: '../views/editUser.html'
-            })
-            .when('/editUser/:id', {
-                templateUrl: '../views/Details.html'
-            })
-            .when('/editArchive', {
-                templateUrl: '../views/editArchive.html'
-            })
-            .when('/viewLogs', {
-                templateUrl: '../views/viewLogs.html'
-            })
-            .when('/newTask', {
-                templateUrl: '../views/newTask.html'
-            }) //Other users profiles
-//            .when('/Supervisor', {
-//                templateUrl: './Supervisor_Profile.php'
+        .when('/register', {
+            templateUrl: '../views/register.html'
+        })
+        .when('/editUser', {
+            templateUrl: '../views/editUser.html'
+        })
+        .when('/editUser/:id', {
+            templateUrl: '../views/Details.html'
+        })
+//            .when('/editArchive', {
+//                templateUrl: '../views/editArchive.html'
 //            })
+        .when('/viewLogs', {
+            templateUrl: '../views/viewLogs.html'
+        })
+        .when('/categoryList', {
+            templateUrl: '../views/categoryList.html'
+        }) //Other users profiles
+        .when('/Supervisor', {
+            templateUrl: './Supervisor_Profile.php'
+        })
 //            .when('/Officer', {
 //                templateUrl: './Officer_Profile.php'
 //            })
-            .otherwise({
-                redirectTo: '/register'
-            });
+        .otherwise({
+            redirectTo: '/register'
+        });
 
     // time is in seconds.
     IdleProvider.idle(15 * 60); // amount of time to wait while the user is iddle
@@ -44,22 +44,23 @@ admin.config(function ($routeProvider, IdleProvider) { //$routeProvider defines 
 
 officer.config(function ($routeProvider, IdleProvider) {
     $routeProvider
-            .when('/viewCategories', {
-                templateUrl: '../views/categories.html',
+        .when('/viewCategories', {
+            templateUrl: '../views/categories.html'
 //                scope: '$rootScope'
-            })
-            .when('/viewDocs', {
-                templateUrl: '../views/taskDocs.html',
-//                scope: '$rootScope'
-            })
-            .otherwise({
-                redirectTo: '/viewCategories'
-            });
+        })
+        .when('/viewDocs', {
+            templateUrl: '../views/taskDocs.html'
+        })
+        .when('/mapLocations', {
+            templateUrl: '../views/mapLocations.html'
+        })
+        .otherwise({
+            redirectTo: '/viewCategories'
+        });
     // time is in seconds.
     IdleProvider.idle(15 * 60); // amount of time to wait while the user is iddle
     IdleProvider.timeout(5); // Warning time.
 });
-
 supervisor.config(function ($routeProvider, IdleProvider) {
     $routeProvider
         .when('/newTask', {

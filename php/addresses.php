@@ -5,6 +5,7 @@ $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
 $connection = new DBHandler();
-$res = $connection->retrieveTasks();
+$res = $connection->retrieveAddresses();
 //convert the response to a json object
 die(json_encode($res));
+

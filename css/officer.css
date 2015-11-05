@@ -771,3 +771,8 @@ input[type="radio"] + label:before {
     content: "\e017";
     font-family: 'Glyphicons Halflings';
 }
+
+#googleMap{
+    height:600px;
+    width:900px;
+}

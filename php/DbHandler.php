@@ -267,11 +267,11 @@ class DBHandler {
         return $docs;
     }
 
-    function retrieveTasks() {
+    function retrieveCategories() {
         global $dbConn;
 
         $docs = [];
-        $query = "SELECT taskName FROM tasks";
+        $query = "SELECT categoryName FROM categories";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -281,15 +281,66 @@ class DBHandler {
             return $docs;
         }
 
-        $stmt->bind_result($taskName);
+        $stmt->bind_result($categoryName);
 
         while ($stmt->fetch()) {
             // create an array with the record
-            $doc = ["taskName" => $taskName];
+            $doc = ["categoryName" => $categoryName];
             // push the record into the user
             array_push($docs, $doc);
         }
         return $docs;
+    }
+
+    function addNewCategory($categoryName) {
+        global $dbConn;
+
+        $query = "INSERT into categories (categoryName) values(?)";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->bind_param("s", $categoryName)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return -1;
+        }
+        //create the directory
+        mkdir("../uploads/" . $categoryName);
+        return 0;
+    }
+
+    function retrieveAddresses() {
+
+        global $dbConn;
+        $watchOrders = [];
+        $query = "SELECT address,city,state,zip,description "
+                . "FROM addresses WHERE dateDiff(addedDate,NOW()) <= validDays";
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->execute()) {
+            return $watchOrders;
+        }
+
+        $stmt->bind_result($address, $city, $state, $zip, $description);
+
+        while ($stmt->fetch()) {
+            // create an array with the record
+            $watchOrder = [
+                "address" => $address,
+                "city" => $city,
+                "state" => $state,
+                "zip" => $zip,
+                "description" => $description
+            ];
+            // push the record into the list of watch orders
+            array_push($watchOrders, $watchOrder);
+        }
+        return $watchOrders;
     }
 
 }

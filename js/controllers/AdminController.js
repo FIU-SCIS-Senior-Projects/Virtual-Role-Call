@@ -1,4 +1,3 @@
-
 /* global admin */
 //decryption
 //            var decdrypted = CryptoJS.AES.decrypt(encryptedPass, "fiu");
@@ -12,7 +11,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             {name: 'Register User', url: 'register'},
             {name: 'Edit/view userInfo', url: 'editUser'},
             {name: 'Edit Archives', url: 'editArchive'},
-            {name: 'Add new Task type', url: 'newTask'},
+            {name: 'Add new category', url: 'categoryList'},
             {name: 'View Logs', url: 'viewLogs'}
         ];
         // For toggling the submenu (view as) for admin
@@ -131,7 +130,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
                                 displayMessage(username + " has been sucessfully registered.");
                                 //wait 2 seconds.
                                 setTimeout(function () {
-                                    //reload page after 2 seconds of sucessful registration.
+                                    //reload page after 2 seconds of sucessul registration.
                                     window.location.reload();
                                 }, 2000);
                             }
@@ -211,6 +210,84 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
                         console.log("Error: " + error);
                     });
         };
+        // used to popualte the list of categories
+        $scope.retrieveCategories = function () {
+            DataRequest.retrieveCategories().then(function (data) {
+                $scope.categories = data;
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
+
+        $scope.saveCategory = function () {
+            // get the entered category.
+            var newCategory = this.cName;
+            if (!newCategory) {
+                displayMessage("No category entered");
+            } else {
+                //request to create the new folder
+                DataRequest.addNewCategory(newCategory)
+                        .then(function (data) {
+                            //reload the page to display the new folder.
+                            location.reload();
+                        }, function (error) {
+                            console.log("Error: " + error);
+                        });
+                this.cName = ""; // clear the field
+            }
+        };
+
+
+
+
+
+
+
+
+
+
+
+//        $(document).ready(function () {
+        $(".use-address").click(function () {
+            console.log("im here");
+            var $row = $(this).closest("tr");    // Find the row
+            var $tds = $row.find("td");
+            $.each($tds, function () {
+                console.log("hello worldl");
+//                    console.log($(this).text());
+            });
+        });
+//        });
+
+
+        $scope.removeCategory = function () {
+            console.log("confirmed");
+//        $(".use-address").click(function () {
+//            console.log("im here");
+//            $(document).ready(function () {
+//                var $row = $(this).closest("tr");    // Find the row
+//                var $text = $row.find(".nr").text(); // Find the text
+
+            // Let's test it out
+//                console.log($row);
+//            }
+
+//        });
+//            $(document).ready(function () {
+//                var $row = $(this).closest('tr');
+//                console.log($(this));
+////                var $row = $(this);
+//                console.log($row);
+//                //your jQuery function
+
+//           
+
+//            var $row = $(this).closest('tr').find('.validation-error').show();
+//            var $row = $("html").html();
+
+
+        };
+
 
 //        function setTableBackground() {
 //            console.log("IM here");
@@ -233,5 +310,3 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
 //        }
 //        }
     }]);
-
-
