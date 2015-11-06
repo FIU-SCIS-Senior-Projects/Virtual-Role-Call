@@ -4,6 +4,11 @@
 officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Idle', '$modal',
     function ($scope, DataRequest, window, Idle, $modal) {
 
+        // wait until the document is ready to get the officer's shift.
+        $(document).ready(function () {
+            officerShift = document.getElementById("officerShift").value;
+        });
+
         $scope.retrieveCategories = function () {
             DataRequest.retrieveCategories().then(function (data) {
                 $scope.categories = data;
@@ -11,8 +16,8 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 console.log("Error: " + error);
             });
         };
-        $scope.retrieveDocs = function (taskType, shift) {
-            DataRequest.retrieveDocs(taskType, shift).then(function (data) {
+        $scope.retrieveDocs = function (taskType) {
+            DataRequest.retrieveDocs(taskType, officerShift).then(function (data) {
                 $scope.documents = data;
                 window.location.href = "#/viewDocs";
                 $scope.category = taskType;
@@ -107,7 +112,7 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 scope: $scope
             });
         }
-//  ****************************************************************
+//      ****************************************************************
 
         (function (a) {
             a.createModal = function (b) {
@@ -127,7 +132,7 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
-                html += "</div>"; // 
+                html += "</div>";
 
                 a("body").prepend(html);
                 a("#myModal").modal().on("hidden.bs.modal", function () {
@@ -136,15 +141,15 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
             };
         })(jQuery);
         //displaying pdf document in a modal.
-        $scope.viewDoc = function (category, docName) {
+        $scope.viewDoc = function (Category, docName) {
             var iframe;
             // Internet reads a space as %20
             docName = docName.replace(" ", "%20");
-            category = category.replace(" ", "%20");
+            Category = Category.replace(" ", "%20");
             //Find the document type.
             var contents = docName.split(".");
             var docType = contents[contents.length - 1 ];
-            var documentUrl = "http://" + location.host + "/VirtualRollCall/uploads/" + category + "/" + docName;
+            var documentUrl = "http://" + location.host + "/VirtualRollCall/uploads/" + Category + "/" + docName;
             //check if the file is supported by the system.
             if (isSupported(docType)) {
 

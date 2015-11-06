@@ -211,7 +211,7 @@ class DBHandler {
         global $dbConn;
 
         $docs = [];
-        $query = "SELECT documentName,category from documents WHERE category =? AND userShift =?";
+        $query = "SELECT documentName,category from documents WHERE category =? AND (userShift =? OR userShift='d')";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -287,7 +287,7 @@ class DBHandler {
         global $dbConn;
         $watchOrders = [];
         $query = "SELECT address,city,state,zip,description "
-                . "FROM addresses WHERE dateDiff(addedDate,NOW()) <= validDays";
+                . "FROM addresses WHERE dateDiff(NOW(),addedDate) <= validDays";
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }

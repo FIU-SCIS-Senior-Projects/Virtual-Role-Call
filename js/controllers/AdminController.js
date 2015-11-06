@@ -238,31 +238,12 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             }
         };
 
-
-
-
-
-
-
-
-
-
-
-//        $(document).ready(function () {
-        $(".use-address").click(function () {
-            console.log("im here");
-            var $row = $(this).closest("tr");    // Find the row
-            var $tds = $row.find("td");
-            $.each($tds, function () {
-                console.log("hello worldl");
-//                    console.log($(this).text());
-            });
-        });
-//        });
-
-
         $scope.removeCategory = function () {
-            console.log("confirmed");
+
+            var $row = $(this).closest("tr");    // Find the row
+            console.log($row);
+            var $text = $row.find(".lol").text(); // Find the text
+            console.log($text);
 //        $(".use-address").click(function () {
 //            console.log("im here");
 //            $(document).ready(function () {
@@ -288,28 +269,6 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
 
 
         };
-
-
-//        function setTableBackground() {
-//            console.log("IM here");
-//            console.log(document);
-////            if (document.getElementsByTagName) {
-//            var table = document.getElementById("usersTable");
-//            console.log(table);
-//            var rows = table.getElementsByTagName("tr");
-//
-//            for (i = 0; i < rows.length; i++) {
-//                //manipulate rows 
-//
-//                if (i % 2 === 0) {
-//                    console.log("im even");
-//                    rows[i].style.backgroundColor = "red";
-//                } else {
-//                    rows[i].style.backgroundColor = "blue";
-//                }
-//            }
-//        }
-//        }
     }]);
 
 
