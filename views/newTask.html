@@ -14,7 +14,7 @@
     <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-lg-6" ng-repeat="c in categories">
         <h3>{{c.categoryName}}</h3>
         <input type="file" name="task" id="{{c.categoryName}}">
-        <input type="text" value="c.categoryName" class="category" name="category"><br>
+        <input type="text" value="{{c.categoryName}}" class="category" name="category"><br>
         <select name="userShift" class="userSelect" required>
             <option value="" disabled selected style="display: none;">Select officer Shift</option>
             <option value="A">A</option>

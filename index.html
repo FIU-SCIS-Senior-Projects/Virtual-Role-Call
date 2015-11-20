@@ -30,10 +30,10 @@
         </div>
 
         <div class="login" ng-controller ="LoginController" >
-            <input type="text" placeholder="username" ng-model="username"> <br>
-            <input type="password" placeholder="password" ng-model="password"><br>
-            <input name="Login" value ="Log in" type="submit" ng-click="loginRequest()">
-            <p style="color:red"> {{message}}</p>
+            <input type="text" placeholder="username" ng-model="username" id="username"> <br>
+            <input type="password" placeholder="password" ng-model="password" id="password"><br>
+            <input name="Login" value ="Log in" type="submit" ng-click="loginRequest()" id="submit">
+            <p style="color:red" id="invalid"> {{message}}</p>
         </div>
 
         <!-- Modules -->
