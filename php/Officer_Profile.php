@@ -36,6 +36,12 @@
                session_start();
                echo $_SESSION['user_Shift'];
                ?>"/>
+        <!--get the username stored in the session variable-->
+        <input type="hidden" id="currentUsername" 
+               value="<?php
+               echo $_SESSION["user_Session"];
+               ?>"/>
+
 
         <h1 class="customText">Virtual Roll Call</h1>
 

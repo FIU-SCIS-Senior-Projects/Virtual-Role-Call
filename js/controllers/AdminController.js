@@ -238,21 +238,33 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             }
         };
 
-        $scope.removeCategory = function () {
+        $scope.getUserLog = function () {
+            var username = $routeParams.username;
+//            $scope.itemsByPage=15;
+            $scope.currentUserLog = username;
+            DataRequest.getUserLog(username).then(function (data) {
+                $scope.userLog = data;
+                $scope.logHolder = data; // for filtering purposes.
 
-            var $row = $(this).closest("tr");    // Find the row
-            console.log($row);
-            var $text = $row.find(".lol").text(); // Find the text
-            console.log($text);
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
+
+
+//            var $row = $(this).closest("tr");    // Find the row
+//            console.log($row);
+//            var $text = $row.find(".lol").text(); // Find the text
+//            console.log($text);
 //        $(".use-address").click(function () {
 //            console.log("im here");
 //            $(document).ready(function () {
 //                var $row = $(this).closest("tr");    // Find the row
 //                var $text = $row.find(".nr").text(); // Find the text
 
-            // Let's test it out
+        // Let's test it out
 //                console.log($row);
-//            }
+//    }
 
 //        });
 //            $(document).ready(function () {
@@ -268,7 +280,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
 //            var $row = $("html").html();
 
 
-        };
+//        };
     }]);
 
 

@@ -145,3 +145,9 @@ tbody td, thead th {
     width: 615px;
     margin:auto;
 }
+
+.customText{
+    text-align: center;
+    color:black;
+    font-weight: bold
+}

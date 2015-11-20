@@ -6,7 +6,7 @@
         <div class="row">
             <article class="4u" ng-repeat="c in categories">
                 <h5 class="customText">{{c.categoryName}}</h5>
-                <a class="image fit thumb" ng-click="retrieveDocs(c.categoryName)">
+                <a class="image fit thumb" href="#/documents/{{c.categoryName}}">
                     <img src="../img/taskBackground.jpg" alt="" />
                 </a>
             </article>

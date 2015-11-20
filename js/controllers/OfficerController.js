@@ -1,12 +1,20 @@
 
 /* global officer */
 
-officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Idle', '$modal',
-    function ($scope, DataRequest, window, Idle, $modal) {
+officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Idle', '$modal', '$routeParams',
+    function ($scope, DataRequest, window, Idle, $modal, $routeParams) {
 
+        // session storage variables
+        var officerShift, currentUsername;
+        // variables used for logging officer activity
+        var doc_startTime, doc_endTime, currentDocument, viewingTime;
         // wait until the document is ready to get the officer's shift.
         $(document).ready(function () {
             officerShift = document.getElementById("officerShift").value;
+        });
+        // wait until the document is ready to get the username.
+        $(document).ready(function () {
+            currentUsername = document.getElementById("currentUsername").value;
         });
 
         $scope.retrieveCategories = function () {
@@ -16,11 +24,12 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
                 console.log("Error: " + error);
             });
         };
-        $scope.retrieveDocs = function (taskType) {
-            DataRequest.retrieveDocs(taskType, officerShift).then(function (data) {
+
+        $scope.retrieveDocs = function () {
+            var category = $routeParams.currentCategory;
+            DataRequest.retrieveDocs(category, officerShift).then(function (data) {
                 $scope.documents = data;
-                window.location.href = "#/viewDocs";
-                $scope.category = taskType;
+                $scope.category = category;
             }, function (error) {
                 console.log("Error: " + error);
             });
@@ -117,7 +126,6 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
         (function (a) {
             a.createModal = function (b) {
                 defaults = {
-//                    title: "",
                     message: "Message Here!",
                     closeButton: true,
                     scrollable: false
@@ -136,12 +144,33 @@ officer.controller('OfficerController', ['$scope', 'DataRequest', '$window', 'Id
 
                 a("body").prepend(html);
                 a("#myModal").modal().on("hidden.bs.modal", function () {
+                    logUserActivity();
+                    //delete the modal from the page 
                     a(this).remove();
                 });
             };
         })(jQuery);
+
+        logUserActivity = function () {
+            // get the moment at which the modal was closed.
+            doc_endTime = Date.now();
+            //calculate the activity time.
+            viewingTime = Math.floor((doc_endTime - doc_startTime) / 1000); // in seconds.
+            //log the user activity into the database.
+            DataRequest.logUserActivity(currentUsername, viewingTime, currentDocument).then(function (data) {
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
+
         //displaying pdf document in a modal.
         $scope.viewDoc = function (Category, docName) {
+            //catch the moment the user starts viewing the document.
+            doc_startTime = Date.now();
+            // get the document name for activity logging purposes.
+            currentDocument = docName;
+
+
             var iframe;
             // Internet reads a space as %20
             docName = docName.replace(" ", "%20");

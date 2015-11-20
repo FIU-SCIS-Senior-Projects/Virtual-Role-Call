@@ -119,6 +119,17 @@ admin.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
+        getUserLog: function (username) {
+            function promiseExecutor(resolve, reject) {
+                $http.post("getUserLog.php", {"username": username})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        },
     };
 }); // Admin Factory
 
@@ -160,6 +171,20 @@ officer.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
+        logUserActivity: function (currentUsername, viewingTime, currentDocument) {
+            function promiseExecutor(resolve, reject) {
+                $http.post("logUserActivity.php",
+                        {username: currentUsername,
+                            viewingTime: viewingTime,
+                            document: currentDocument})
+                        .then(function (data) {
+                            resolve(data.data);
+                        }, function (error) {
+                            reject(error);
+                        });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished. 
+        }
     };
 }); // Officer Factory
  
