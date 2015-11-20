@@ -15,20 +15,20 @@
         <input type="password" placeholder="password" ng-model="password">        
 
         <div>
-            <select ng-model="userType" class="userSelect">
-                <option value="" disabled selected style="display: none;">Type of Officer</option>
-                <option value="Officer">Officer</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Administrator">Administrator</option>
-            </select>
+        <select ng-model="userType" class="userSelect">
+            <option value="" disabled selected style="display: none;">Type of Officer</option>
+            <option value="Officer">Officer</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Administrator">Administrator</option>
+        </select>
 
-            <select ng-model="userShift" class="userSelect">
-                <option value="" disabled selected style="display: none;">Select officer Shift</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-            </select>           
-        </div>
+        <select ng-model="userShift" class="userSelect">
+            <option value="" disabled selected style="display: none;">Select officer Shift</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select>
+    </div>
         <br>
         <button style="font-weight: bold" type="submit" ng-click="register()">Register</button>
     </form>

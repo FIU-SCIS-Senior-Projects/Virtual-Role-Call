@@ -144,7 +144,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             var id = Number($routeParams.id); // user to find. cast into an int
 
             DataRequest.getUser(id).then(function (data) {
-                // The id entered does not match any records
+                // The id entered does not match    any records
                 if (data.lastName === null) {
                     console.log("Error", "This user does not exist.");
                 } else {   // populate the form with the user's data.

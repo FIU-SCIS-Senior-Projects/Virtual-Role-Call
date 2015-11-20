@@ -69,6 +69,9 @@ supervisor.config(function ($routeProvider, IdleProvider) {
         .when('/pinTask', {
             templateUrl: '../views/pinTask.html'
         })
+        .when('/viewPinnedTasks' , {
+            templateUrl: '../views/pinnedTasks.html'
+        })
         .otherwise({
             redirectTo: '/newTask'
         });

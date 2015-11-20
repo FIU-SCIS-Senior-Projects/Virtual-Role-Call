@@ -70,7 +70,24 @@ class DBHandler {
         $updateStatus->close();
         $dbConn->close();
     }
-
+    function addWatchOrder($address, $city, $zip, $state, $validDays, $description){
+        global $dbConn;
+        $result = ["address" => NULL];
+        if(!($stmt = $dbConn->prepare("INSERT INTO addresses(Address,City,State,ZIP,validDays,Description)"
+                ."VALUES (?,?,?,?,?,?)"))){
+            echo "Preparation of Address Statement Failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        if(!$stmt->bind_param("ssssis", $address, $city, $state, $zip,$validDays,$description)){
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return $result;
+        }
+        $result['address'] = $address;
+        $dbConn->close();
+        $stmt->close();
+        return $result;
+    }
     function register($lastName, $firstName, $username, $password, $userType, $userShift) {
         global $dbConn;
         $result = ["username" => NULL];
@@ -123,6 +140,28 @@ class DBHandler {
         // close connections.
         $dbConn->close();
         $stmt->close();
+    }
+    function getPinnedTasks() {
+        global $dbConn;
+
+        $pinned = [];
+        if (!($stmt = $dbConn->prepare("SELECT * from pinneddocuments"))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        if (!$stmt->execute()) {
+            return $result;
+        }
+        $stmt->bind_result($userId, $documentId, $dateCreated);
+        while($stmt->fetch()){
+            $tmp = [
+                "username" => $userId,
+                "documentName" => $documentId,
+                "timestamp" => $dateCreated,
+                "documentId" => $documentId
+            ];
+            array_push($pinned,$tmp);
+        }
+        return $pinned;
     }
     function getUsers() {
         global $dbConn;

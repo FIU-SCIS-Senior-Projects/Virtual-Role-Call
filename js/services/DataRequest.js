@@ -96,17 +96,6 @@ admin.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished. 
         },
-        retrieveCategories: function () {
-            function promiseExecutor(resolve, reject) {
-                $http.post("retrieveCategories.php", {})
-                        .then(function (data) {
-                            resolve(data.data);
-                        }, function (error) {
-                            reject(error);
-                        });
-            }
-            return $q(promiseExecutor); // this function will determine when the function is finished. 
-        },
         addNewCategory: function (categoryName) {
             function promiseExecutor(resolve, reject) {
                 $http.post("newCategory.php", {
@@ -124,9 +113,28 @@ admin.factory('DataRequest', function ($http, $q) {
 
 supervisor.factory('DataRequest', function ($http, $q) {
     return {
-        retrieveTasks: function () {
+        addWatchOrder: function (address, city, zip, state, validDays, description) {
             function promiseExecutor(resolve, reject) {
-                $http.post("retrieveTasks.php", {})
+                $http.post("addWatchOrder.php",
+                    {
+                        "address"       : address,
+                        "city"          : city,
+                        "zip"           : zip,
+                        "state"         : state,
+                        "validDays"     : Number(validDays),
+                        "description"   : description
+                    }
+                ).then(function (data){
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
+            }
+            return $q(promiseExecutor);
+        },
+        getPinnedTasks: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("getTasks.php", {})
                     .then(function (data) {
                         resolve(data.data);
                     }, function (error) {
@@ -135,7 +143,17 @@ supervisor.factory('DataRequest', function ($http, $q) {
             }
             return $q(promiseExecutor); // this function will determine when the function is finished.
         },
-
+        retrieveCategories: function () {
+            function promiseExecutor(resolve, reject) {
+                $http.post("retrieveCategories.php", {})
+                    .then(function (data) {
+                        resolve(data.data);
+                    }, function (error) {
+                        reject(error);
+                    });
+            }
+            return $q(promiseExecutor); // this function will determine when the function is finished.
+        },
     };
 });
 officer.factory('DataRequest', function ($http, $q) {

@@ -5,7 +5,7 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
         $scope.OptionsBar = [
             {name: 'Add Task', url: 'newTask'},
             {name: 'Pin Task', url: 'pinTask'},
-            {name: 'View Pinned Tasks', url: ''}
+            {name: 'View Pinned Task', url: 'viewPinnedTasks'}
         ];
         // For toggling the submenu (view as) for supervisor
         (function ($) {
@@ -18,16 +18,76 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
                 });
             });
         })(jQuery);
-        $scope.addTask = function(){
-            var userShift = this.userShift;
-            var category = this.category;
-            if(!(userShift && category)){
-                this.message = "*Please complete all fields.";
+        function displayMessage(message) {
+            $scope.message = message;
+            $scope.msgModal = $modal.open({
+                templateUrl: 'notification.html',
+                windowClass: 'modal-danger',
+                scope: $scope
+            });
+        }
+        $scope.removePin = function(documentId, documentName){
+            DataRequest.removePin()
+                .then(function (data){
+                    if(data['documentId'] === null){
+                        displayMessage("Error deleting the message")
+                    }else{
+                        displayMessage("error deleting Document of Id " + documentId + "Titled" + documentName)
+                    }
+                })
+        }
+        $scope.retrieveCategories = function () {
+            DataRequest.retrieveCategories().then(function (data) {
+                $scope.categories = data;
+            }, function (error) {
+                console.log("Error: " + error);
+            });
+        };
+        $scope.addWatchOrder = function(){
+            var address = this.address;
+            var city = this.city;
+            var zip = this.zip;
+            var state = this.state;
+            var validDays = this.validDays;
+            var description = this.description;
+            if(!(address && city && zip && state && validDays && description)){
+                displayMessage("*Please Complete all watch order fields");
+            }else { // all fields entered. Add Watch Order user.
+
+                DataRequest.addWatchOrder(address, city, zip, state, validDays, description)
+                    .then(function (data) {
+                        if (data['address'] === null) {
+                            displayMessage("*This address is already associated with another order.");
+                        } else { //sucessful registration
+                            displayMessage(address + " " + city + ", " + state + " has been sucessfully added.");
+                            //wait 2 seconds.
+                            setTimeout(function () {
+                                //reload page after 2 seconds of sucessul addition.
+                                window.location.reload();
+                            }, 2000);
+                        }
+                    }, function (error) {
+                        console.log("Error: " + error);
+                    });
             }
         }
         //
-        $scope.validateTask = function(){
-
+        $scope.getPinnedTasks = function(){
+            DataRequest.getPinnedTasks().then(function (data) {
+                var list = [];
+                for(var x in data) {
+                    var tmp = new Object();
+                    tmp.documentName = data[x].documentName;
+                    tmp.username = data[x].username;
+                    tmp.timestamp = data[x].timestamp;
+                    tmp.documentId = data[x].documentId;
+                    list.push(tmp);
+                }
+                $scope.pinnedTasks = list;
+                }
+            , function (error) {
+                    console.log("Error: " + error);
+                });
         };
         //      **************** monitoring idle user ************ ****
 

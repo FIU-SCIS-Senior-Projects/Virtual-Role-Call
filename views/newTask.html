@@ -8,89 +8,37 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="../css/dnd.css">
 <body>
-<div class="col-centered">
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3>BOLO</h3>
-        <input type="file" name="task" id="bolo">
-        <input type="text" value="bolo" class="category" name="category">
-        <select name="userShift" class="userSelect">
+<div ng-init="retrieveCategories()">
+<div class="categoryContainer">
+    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-lg-6" ng-repeat="c in categories">
+        <h3>{{c.categoryName}}</h3>
+        <input type="file" name="task" id="{{c.categoryName}}">
+        <input type="text" value="c.categoryName" class="category" name="category"><br>
+        <select name="userShift" class="userSelect" required>
             <option value="" disabled selected style="display: none;">Select officer Shift</option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
             <option value="D">All</option>
         </select>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3>Internal Memo</h3>
-        <input type="file" name="task" id="internal">
-        <input type="text" value="internalMemo" class="category" name="category">
-        <select name="userShift" class="userSelect">
-            <option value="" disabled selected style="display: none;">Select officer Shift</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">All</option>
-        </select>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3 style="font:80">Message From the Chief</h3>
-        <input type="file" name="task" id="mftc">
-        <input type="text" value="messageFromTheChief" class="category" name="category">
-        <select name="userShift" class="userSelect">
-            <option value="" disabled selected style="display: none;">Select officer Shift</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">All</option>
-        </select>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <br>
-
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3>Shift Lineup</h3>
-        <input type="file" name="task" id="lineup">
-        <input type="text" value="lineup" class="category" name="category">
-        <select name="userShift" class="userSelect">
-            <option value="" disabled selected style="display: none;">Select officer Shift</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">All</option>
-        </select>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3>Miscellaneous</h3>
-        <input type="file" name="task" id="misc">
-        <input type="text" name="category" value="miscellaneous" class="category">
-        <select name="userShift" class="userSelect">
-            <option value="" disabled selected style="display: none;">Select officer Shift</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">All</option>
-        </select>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <form action="../php/upload.php" method="post" enctype="multipart/form-data" class="col-md-3">
-        <h3>Training</h3>
-        <input type="file" name="task" id="training">
-        <input type="text" value="training" class="category" name="category">
-        <select name="userShift" class="userSelect">
-            <option value="" disabled selected style="display: none;">Select officer Shift</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">All</option>
-        </select>
-        <input type="submit" value="Upload" name="submit">
+        <input type="submit" value="Upload" name="submit" class="btn btn-primary">
     </form>
 </div>
+</div>
+
+<div class="col-centered">
+    <form class="col-lg-12 center">
+        <h1>Add Watch Order</h1>
+        <input type="text" placeholder="Street Address" ng-model="address" required>
+        <input type="text" placeholder="City" ng-model="city" required>
+        <input type="text" placeholder="State" ng-model="state" required>
+        <input type="text" placeholder="ZIP Code" ng-model="zip" required>
+        <input type="text" placeholder="Valid Number of Days" ng-model="validDays" required>
+        <br>
+        <input type="text" placeholder="Description" ng-model="description">
+        <button style="font-weight: bold" type="submit" ng-click="addWatchOrder()">Add Watch Order</button>
+    </form>
+    </div>
 </body>
 </html>

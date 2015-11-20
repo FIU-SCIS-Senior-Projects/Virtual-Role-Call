@@ -24,9 +24,6 @@ $login_session = $_SESSION['user_Session'];
         <link type="text/css" rel="stylesheet" href="../css/supervisor.css"/>
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
-        <!--Drag and Drop script-->
-        <script src="../js/vendor/web/dropzone.js"></script>
-
 
     </head>
     <body ng-app="supervisorModule" class="container">
@@ -71,9 +68,9 @@ $login_session = $_SESSION['user_Session'];
         </div> <!-- Container-->
 
         <br>
-
-        <ng-view></ng-view>
-
+        <div class="container">
+            <ng-view></ng-view>
+        </div>
     </div> <!--CONTROLLER -->
 
     <!--This modal will be displayed if the user is idle for too long.-->
