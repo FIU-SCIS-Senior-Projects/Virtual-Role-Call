@@ -144,7 +144,7 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             var id = Number($routeParams.id); // user to find. cast into an int
 
             DataRequest.getUser(id).then(function (data) {
-                // The id entered does not match    any records
+                // The id entered does not match any records
                 if (data.lastName === null) {
                     console.log("Error", "This user does not exist.");
                 } else {   // populate the form with the user's data.
@@ -237,40 +237,33 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
             }
         };
 
+        $scope.getUserLog = function () {
+            var username = $routeParams.username;
+//            $scope.itemsByPage=15;
+            $scope.currentUserLog = username;
+            DataRequest.getUserLog(username).then(function (data) {
+                $scope.userLog = data;
+                $scope.logHolder = data; // for filtering purposes.
 
-
-
-
-
-
-
-
-
-
-//        $(document).ready(function () {
-        $(".use-address").click(function () {
-            console.log("im here");
-            var $row = $(this).closest("tr");    // Find the row
-            var $tds = $row.find("td");
-            $.each($tds, function () {
-                console.log("hello worldl");
-//                    console.log($(this).text());
+            }, function (error) {
+                console.log("Error: " + error);
             });
-        });
-//        });
+        };
 
 
-        $scope.removeCategory = function () {
-            console.log("confirmed");
+//            var $row = $(this).closest("tr");    // Find the row
+//            console.log($row);
+//            var $text = $row.find(".lol").text(); // Find the text
+//            console.log($text);
 //        $(".use-address").click(function () {
 //            console.log("im here");
 //            $(document).ready(function () {
 //                var $row = $(this).closest("tr");    // Find the row
 //                var $text = $row.find(".nr").text(); // Find the text
 
-            // Let's test it out
+        // Let's test it out
 //                console.log($row);
-//            }
+//    }
 
 //        });
 //            $(document).ready(function () {
@@ -286,27 +279,5 @@ admin.controller('AdminController', ['$scope', 'DataRequest', '$window', '$route
 //            var $row = $("html").html();
 
 
-        };
-
-
-//        function setTableBackground() {
-//            console.log("IM here");
-//            console.log(document);
-////            if (document.getElementsByTagName) {
-//            var table = document.getElementById("usersTable");
-//            console.log(table);
-//            var rows = table.getElementsByTagName("tr");
-//
-//            for (i = 0; i < rows.length; i++) {
-//                //manipulate rows 
-//
-//                if (i % 2 === 0) {
-//                    console.log("im even");
-//                    rows[i].style.backgroundColor = "red";
-//                } else {
-//                    rows[i].style.backgroundColor = "blue";
-//                }
-//            }
-//        }
-//        }
+//        };
     }]);

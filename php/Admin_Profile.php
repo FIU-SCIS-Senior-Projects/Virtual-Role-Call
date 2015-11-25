@@ -14,7 +14,7 @@ $login_session = $_SESSION['user_Session'];
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
         <!-- bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> <!-- CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"> <!-- CSS -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <!-- BOOTSTRAP's JS -->
 
         <!--UI_boostrap-->
@@ -28,12 +28,16 @@ $login_session = $_SESSION['user_Session'];
         <!--Idle script-->
         <script src="../js/vendor/angular-idle.min.js"></script>
 
-    </head>
+        <!--tables-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.4/smart-table.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.4/smart-table.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.4/smart-table.min.js.map"></script>
+
     <body ng-app="adminModule" class="container">
 
         <br>
         <div ng-controller = "AdminController">
-            <!--Nav-Bar containing all the options -->
+            <!--Nav-Bar containing all the options--> 
             <div class="navContainer" ng-init="start()">
                 <div class="row">
                     <nav class="nav navbar-inverse navbar-static-top marginBottom-0" role="navigation">
@@ -42,7 +46,7 @@ $login_session = $_SESSION['user_Session'];
                                 role="presentation"
                                 ng-class="{ active: isActive('/')}">
                                 <a href="#/{{option.url}}">{{option.name}}</a>
-                            </li>
+                            </li><!--
                             <!--dropdown Menu here-->
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,17 +104,17 @@ $login_session = $_SESSION['user_Session'];
         </script>
 
         <br><br>
-        <p style="float: right">&copy; 2015 Pinecrest PD. All rights reserved.<p>
 
-            <!--                <div id="profile">
-                                <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
-                                <br>
-                            </div>-->
-            <!--modules-->
-            <script src="../js/app.js"></script> 
-            <!--controllers-->
-            <script src="../js/controllers/AdminController.js"></script>
-            <!-- Services -->
-            <script src = "../js/services/DataRequest.js"></script>
+
+        <!--                <div id="profile">
+                            <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
+                            <br>
+                        </div>-->
+        <!--modules-->
+        <script src="../js/app.js"></script> 
+        <!--controllers-->
+        <script src="../js/controllers/AdminController.js"></script>
+        <!-- Services -->
+        <script src = "../js/services/DataRequest.js"></script>
     </body>
 </html>

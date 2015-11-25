@@ -47,8 +47,6 @@ class DBHandler {
             $onlineStatus = 1;
             $this->changeOnlineStatus($username, $onlineStatus);
         }
-        // close connections.
-//        $dbConn->close();
         return $result;
     }
 
@@ -190,6 +188,9 @@ class DBHandler {
             // push the record into the user
             array_push($users, $tmp);
         }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
         return $users;
     }
 
@@ -280,7 +281,7 @@ class DBHandler {
         global $dbConn;
 
         $docs = [];
-        $query = "SELECT documentName,category from documents WHERE category =? AND userShift =?";
+        $query = "SELECT documentName,category from documents WHERE category =? AND (userShift =? OR userShift='d')";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -303,6 +304,9 @@ class DBHandler {
             // push the record into the user
             array_push($docs, $doc);
         }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
         return $docs;
     }
 
@@ -328,6 +332,9 @@ class DBHandler {
             // push the record into the user
             array_push($docs, $doc);
         }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
         return $docs;
     }
 
@@ -348,6 +355,9 @@ class DBHandler {
         }
         //create the directory
         mkdir("../uploads/" . $categoryName);
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
         return 0;
     }
 
@@ -356,7 +366,7 @@ class DBHandler {
         global $dbConn;
         $watchOrders = [];
         $query = "SELECT address,city,state,zip,description "
-                . "FROM addresses WHERE dateDiff(addedDate,NOW()) <= validDays";
+                . "FROM addresses WHERE dateDiff(NOW(),addedDate) <= validDays";
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
@@ -379,7 +389,67 @@ class DBHandler {
             // push the record into the list of watch orders
             array_push($watchOrders, $watchOrder);
         }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
         return $watchOrders;
+    }
+
+    function logUserActivity($username, $viewTime, $document) {
+        global $dbConn;
+
+        $query = "INSERT into logs (username,viewingTime,documentName) values(?,?,?)";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->bind_param("sss", $username, $viewTime, $document)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return -1;
+        }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
+        return 0;
+    }
+
+    function getUserLog($username) {
+        global $dbConn;
+        $userLogs = [];
+
+        $query = "SELECT eventDay,viewingTime,documentName "
+                . "FROM logs WHERE username=?";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        if (!$stmt->bind_param("s", $username)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+            return $userLogs;
+        }
+
+        $stmt->bind_result($eventDay, $viewingTime, $documentName);
+
+        while ($stmt->fetch()) {
+            $log = [
+                "eventDay" =>$eventDay,
+                "viewingTime" => $viewingTime,
+                "documentName" => $documentName
+            ];
+            // push the record
+            array_push($userLogs, $log);
+        }
+
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
+        return $userLogs;
     }
 
 }

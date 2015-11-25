@@ -2,14 +2,11 @@
 <html>
     <head>
         <title>New Category</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
 
         <!--populate the list of users.-->
-        <div class="categoryContainer" ng-init="retrieveCategories()"> 
-            <div categoryContainer></div>
+        <div ng-init="retrieveCategories()"> 
             <table class="table table-striped table-hover" id="categoryTable">
                 <br>          
                 <thead>
@@ -22,15 +19,17 @@
                     <tr>
                         <td class="col-sm-6 text-center">{{c.categoryName}}</td>
                         <!--<td><button type="button" class="use-address"/>Button</td>-->
-                        <td class="col-sm-6 text-center">  
-                            <a class="btn btn-primary btn-xs "data-toggle="modal" data-target="#categoryModal">Remove</a>
+                        <td class="col-sm-6 text-center">                   
+                            <a class="btn btn-primary btn-xs" data-toggle="modal" 
+                               data-target="#categoryModal">Remove</a>
                         </td>
                     </tr>
                 </tbody>
             </table>  
-
-            <button class="btn btn-lg" data-toggle="modal" data-target="#newCategoryModal">Add New Category</button>
+            <button class="btn btn-lg " data-toggle="modal" 
+                    data-target="#newCategoryModal">Add New Category</button>
         </div>
+
 
         <!-- Modal -->
         <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
@@ -41,7 +40,7 @@
                     </div>
                     <div class="modal-footer">
                         <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                        <a  type="button" class="btn btn-primary" data-dismiss="modal" ng-click="removeCategory()">Confirm</a>
+                        <a  type="button" class="btn btn-primary" data-dismiss="modal">Confirm</a>
                     </div>
                 </div>
             </div>

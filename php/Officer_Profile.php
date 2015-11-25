@@ -1,12 +1,9 @@
 
-<?php
-session_start();
-//echo $_SESSION["user_Session"];
-//echo $_SESSION["user_Shift"];
-?>
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Officer Home Page</title>
 
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> <!--ANGULAR-->
@@ -32,6 +29,19 @@ session_start();
         <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
     </head>
     <body ng-app="officerModule">
+
+        <!--get the officer's shift stored in the session variable-->
+        <input type="hidden" id="officerShift" 
+               value="<?php
+               session_start();
+               echo $_SESSION['user_Shift'];
+               ?>"/>
+        <!--get the username stored in the session variable-->
+        <input type="hidden" id="currentUsername" 
+               value="<?php
+               echo $_SESSION["user_Session"];
+               ?>"/>
+
 
         <h1 class="customText">Virtual Roll Call</h1>
 
