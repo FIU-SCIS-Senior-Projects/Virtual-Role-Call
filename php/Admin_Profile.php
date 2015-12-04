@@ -56,7 +56,7 @@ $login_session = $_SESSION['user_Session'];
                                         <a class="dropdown-toggle" data-toggle="dropdown">View as</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="./Admin_Profile.php#/">View As Administrator</a></li>
-                                            <li><a href="#/Supervisor">View As Supervisor</a></li>
+                                            <li><a href="./Supervisor_Profile.php   ">View As Supervisor</a></li>
                                             <li><a href="./Officer_Profile.php">View As Officer</a></li>
                                         </ul>
                                     </li>

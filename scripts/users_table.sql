@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Password` varchar(50) NOT NULL COMMENT 'encrypted',
   `userType` text NOT NULL COMMENT '1)Officer, 2)Sargent, 3)Admin',
   `Shift` varchar(1) DEFAULT NULL COMMENT 'Officer shift',
-  `RegistrationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `RegistrationDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `onlineStatus` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Username` (`Username`),
