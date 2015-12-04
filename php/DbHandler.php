@@ -1,8 +1,10 @@
 <?php
 
-class DBHandler {
+class DBHandler
+{
 
-    function __construct() {
+    function __construct()
+    {
 
         global $dbConn;
 //        $contents = file_get_contents("../../../dbCredentials");
@@ -17,7 +19,8 @@ class DBHandler {
         }
     }
 
-    function loginUser($username) {
+    function loginUser($username)
+    {
         global $dbConn;
         //store the result here
         $result = ["username" => NULL,
@@ -28,7 +31,7 @@ class DBHandler {
         ];
 
         $stmt = $dbConn->prepare("SELECT username,password,userType,onlineStatus,shift"
-                . " FROM users WHERE username=?");
+            . " FROM users WHERE username=?");
         if (!$stmt) {
             return -1;
         }
@@ -51,7 +54,8 @@ class DBHandler {
     }
 
     // helper method to change the login status of a user.
-    function changeOnlineStatus($username, $status) {
+    function changeOnlineStatus($username, $status)
+    {
         global $dbConn;
         if (!($updateStatus = $dbConn->prepare("UPDATE users SET OnlineStatus = ? WHERE Username = ?"))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -68,14 +72,17 @@ class DBHandler {
         $updateStatus->close();
         $dbConn->close();
     }
-    function addWatchOrder($address, $city, $zip, $state, $validDays, $description){
+
+    function addWatchOrder($address, $city, $zip, $state, $validDays, $description)
+    {
         global $dbConn;
         $result = ["address" => NULL];
-        if(!($stmt = $dbConn->prepare("INSERT INTO addresses(Address,City,State,ZIP,validDays,Description)"
-                ."VALUES (?,?,?,?,?,?)"))){
+        if (!($stmt = $dbConn->prepare("INSERT INTO addresses(Address,City,State,ZIP,validDays,Description)"
+            . "VALUES (?,?,?,?,?,?)"))
+        ) {
             echo "Preparation of Address Statement Failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
-        if(!$stmt->bind_param("ssssis", $address, $city, $state, $zip,$validDays,$description)){
+        if (!$stmt->bind_param("ssssis", $address, $city, $state, $zip, $validDays, $description)) {
             echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         }
         if (!$stmt->execute()) {
@@ -86,12 +93,15 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
-    function register($lastName, $firstName, $username, $password, $userType, $userShift) {
+
+    function register($lastName, $firstName, $username, $password, $userType, $userShift)
+    {
         global $dbConn;
         $result = ["username" => NULL];
 
         if (!($stmt = $dbConn->prepare("INSERT INTO users(Last_Name,First_Name,Username,Password,userType,Shift) "
-                . "VALUES (?,?,?,?,?,?)"))) {
+            . "VALUES (?,?,?,?,?,?)"))
+        ) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
 
@@ -108,9 +118,11 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
-    function addTask($documentName, $userShift, $category){
+
+    function addTask($documentName, $userShift, $category)
+    {
         global $dbConn;
-        if(!($stmt = $dbConn->prepare("INSERT INTO documents(DocumentName, UserShift, Category) VALUES (?,?,?)"))){
+        if (!($stmt = $dbConn->prepare("INSERT INTO documents(DocumentName, UserShift, Category) VALUES (?,?,?)"))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
         if (!$stmt->bind_param("sss", $documentName, $userShift, $category)) {
@@ -123,12 +135,14 @@ class DBHandler {
         $dbConn->close();
         $stmt->close();
     }
-    function pinTask($documentId){
+
+    function pinTask($documentId)
+    {
         global $dbConn;
-        if(!($stmt = $dbConn->prepare("INSERT INTO pinneddocuments(DocumentId, UserId) VALUES (?,?)"))){
+        if (!($stmt = $dbConn->prepare("INSERT INTO pinneddocuments(DocumentId, UserId) VALUES (?,?)"))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
-        $userId = "1";
+        $userId = 1;
         if (!$stmt->bind_param("ss", $documentId, $userId)) {
             echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         }
@@ -139,7 +153,9 @@ class DBHandler {
         $dbConn->close();
         $stmt->close();
     }
-    function getPinnedTasks() {
+
+    function getPinnedTasks()
+    {
         global $dbConn;
 
         $pinned = [];
@@ -149,19 +165,65 @@ class DBHandler {
         if (!$stmt->execute()) {
             return $result;
         }
+
         $stmt->bind_result($userId, $documentId, $dateCreated);
-        while($stmt->fetch()){
+        while ($stmt->fetch()) {
             $tmp = [
                 "username" => $userId,
-                "documentName" => $documentId,
                 "timestamp" => $dateCreated,
                 "documentId" => $documentId
             ];
-            array_push($pinned,$tmp);
+            array_push($pinned, $tmp);
         }
+//        foreach($pinned as $pin) {
+//            if (!($DocStmt = $dbConn->prepare("SELECT documentName FROM documents WHERE id =?"))) {
+//                echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+//            }
+//            if (!$DocStmt->bind_param("s", $pin["documentId"])) {
+//                echo "Binding parameters failed: (" . $DocStmt->errno . ") " . $DocStmt->error;
+//            }
+//            if (!$DocStmt->execute()) {
+//                return $result;
+//            }
+//            $DocStmt->bind_result($documentName);
+//            $DocStmt->fetch();
+//            $pin["documentName"] = $documentName;
+//
+//        }
+        $pinned = $this->fillDocumentName($pinned);
         return $pinned;
     }
-    function getUsers() {
+
+    function fillDocumentName($pinned)
+    {
+        global $dbConn;
+        if (!($DocStmt = $dbConn->prepare("SELECT documentName FROM documents WHERE id =?"))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        $named = [];
+        foreach ($pinned as $pin) {
+
+            if (!$DocStmt->bind_param("s", $pin["documentId"])) {
+                echo "Binding parameters failed: (" . $DocStmt->errno . ") " . $DocStmt->error;
+            }
+            if (!$DocStmt->execute()) {
+                return $result;
+            }
+            $DocStmt->bind_result($documentName);
+            $DocStmt->fetch();
+            array_push($named, array(
+                "username" => $pin['username'],
+                "timestamp" => $pin['timestamp'],
+                "documentId" => $pin['documentId'],
+                "documentName" => $documentName
+            ));
+
+        }
+        return $named;
+    }
+
+    function getUsers()
+    {
         global $dbConn;
 
         $users = [];
@@ -194,7 +256,8 @@ class DBHandler {
         return $users;
     }
 
-    function getUser($id) {
+    function getUser($id)
+    {
         global $dbConn;
         $user = [
             "lastName" => NULL,
@@ -206,8 +269,8 @@ class DBHandler {
             "Registration" => NULL];
 
         $query = "SELECT Last_Name,First_Name,Username,Password,userType,Shift,RegistrationDate "
-                . "FROM users "
-                . "WHERE id=?";
+            . "FROM users "
+            . "WHERE id=?";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -230,13 +293,14 @@ class DBHandler {
         return $user;
     }
 
-    function updateUser($id, $lastName, $firstName, $username, $password, $userType, $userShift) {
+    function updateUser($id, $lastName, $firstName, $username, $password, $userType, $userShift)
+    {
 
         global $dbConn;
         $result = ["response" => null];
         $query = "UPDATE users SET  "
-                . "Last_Name=?,First_Name=?,Username=?,Password=?,userType=?,Shift=?"
-                . " WHERE ID=?";
+            . "Last_Name=?,First_Name=?,Username=?,Password=?,userType=?,Shift=?"
+            . " WHERE ID=?";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -255,7 +319,8 @@ class DBHandler {
         return $result;
     }
 
-    function removeUser($id) {
+    function removeUser($id)
+    {
         global $dbConn;
         $result = ["response" => null];
         $query = "DELETE FROM users WHERE ID = ? ";
@@ -276,8 +341,31 @@ class DBHandler {
         $stmt->close();
         return $result;
     }
+    function removePin($documentId)
+    {
+        global $dbConn;
+        $result = ["response" => null];
+        $query = "DELETE FROM pinneddocuments WHERE documentId = ? ";
 
-    function retrieveDocs($taskType, $userShift) {
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+
+        if (!$stmt->bind_param("s", $documentId)) {
+            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if (!$stmt->execute()) {
+            return $result;
+        }
+        $result["documentId"] = $documentId;
+
+        $dbConn->close();
+        $stmt->close();
+        return $result;
+    }
+
+    function retrieveDocs($taskType, $userShift)
+    {
         global $dbConn;
 
         $docs = [];
@@ -310,7 +398,44 @@ class DBHandler {
         return $docs;
     }
 
-    function retrieveCategories() {
+    function getRecentlyAddedTasks()
+    {
+        global $dbConn;
+
+        $docs = [];
+        $query = "SELECT documentName,id,uploadDate, category, userShift from documents ORDER BY 'id' DESC ";
+
+        if (!($stmt = $dbConn->prepare($query))) {
+            echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
+        }
+        if (!$stmt->execute()) {
+            return $docs;
+        }
+
+        $stmt->bind_result($docName, $id, $uploadDate, $category, $userShift);
+
+        for ($i = 0; $stmt->fetch() && $i < 50; $i++) {
+            if((strcmp("D", $userShift)) == 0){
+                $userShift = "All";
+            }
+            // create an array with the record
+            $doc = ["documentName" => $docName,
+                "documentId" => $id,
+                "uploadDate" => $uploadDate,
+                "category" => $category,
+                "userShift" => $userShift
+            ];
+            // push the record into the user
+            array_push($docs, $doc);
+        }
+        // clean connections.
+        $dbConn->close();
+        $stmt->close();
+        return $docs;
+    }
+
+    function retrieveCategories()
+    {
         global $dbConn;
 
         $docs = [];
@@ -338,7 +463,8 @@ class DBHandler {
         return $docs;
     }
 
-    function addNewCategory($categoryName) {
+    function addNewCategory($categoryName)
+    {
         global $dbConn;
 
         $query = "INSERT into categories (categoryName) values(?)";
@@ -361,12 +487,13 @@ class DBHandler {
         return 0;
     }
 
-    function retrieveAddresses() {
+    function retrieveAddresses()
+    {
 
         global $dbConn;
         $watchOrders = [];
         $query = "SELECT address,city,state,zip,description "
-                . "FROM addresses WHERE dateDiff(NOW(),addedDate) <= validDays";
+            . "FROM addresses WHERE dateDiff(NOW(),addedDate) <= validDays";
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
         }
@@ -395,7 +522,8 @@ class DBHandler {
         return $watchOrders;
     }
 
-    function logUserActivity($username, $viewTime, $document) {
+    function logUserActivity($username, $viewTime, $document)
+    {
         global $dbConn;
 
         $query = "INSERT into logs (username,viewingTime,documentName) values(?,?,?)";
@@ -416,12 +544,13 @@ class DBHandler {
         return 0;
     }
 
-    function getUserLog($username) {
+    function getUserLog($username)
+    {
         global $dbConn;
         $userLogs = [];
 
         $query = "SELECT eventDay,viewingTime,documentName "
-                . "FROM logs WHERE username=?";
+            . "FROM logs WHERE username=?";
 
         if (!($stmt = $dbConn->prepare($query))) {
             echo "Prepare failed: (" . $dbConn->errno . ") " . $dbConn->error;
@@ -438,7 +567,7 @@ class DBHandler {
 
         while ($stmt->fetch()) {
             $log = [
-                "eventDay" =>$eventDay,
+                "eventDay" => $eventDay,
                 "viewingTime" => $viewingTime,
                 "documentName" => $documentName
             ];

@@ -13,47 +13,17 @@ class AccountCreationTests extends PHPUnit_Framework_TestCase
         $username = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::name('username'));
         $username->click();
         $this->webDriver->getKeyboard()->sendKeys('Frank');
-        
+
 
     }
-    public function testAdminLandingPage(){
-        $this->webDriver->get($this->url);
-        $usernameBox = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("username"));
-        $passwordInput = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("password"));
-        $usernameBox->click();
-        $this->webDriver->getKeyboard()->sendKeys('Frank');
-        $this->webDriver->wait(1);
-        $passwordInput->click();
-        $this->webDriver->getKeyboard()->sendKeys('frank');
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('submit'));
-        $submit->click();
-        $this->assertContains("Admin Page",$this->webDriver->getTitle());
+    public function TestUser(){
+
     }
     public function testSupervisorLandingPage(){
-        $this->webDriver->get($this->url);
-        $usernameBox = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("username"));
-        $passwordInput = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("password"));
-        $usernameBox->click();
-        $this->webDriver->getKeyboard()->sendKeys('Jason');
-        $this->webDriver->wait(1);
-        $passwordInput->click();
-        $this->webDriver->getKeyboard()->sendKeys('jason');
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('submit'));
-        $submit->click();
-        $this->assertContains("Supervisor Page",$this->webDriver->getTitle());
+
     }
     public function testOfficerLandingPage(){
-        $this->webDriver->get($this->url);
-        $usernameBox = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("username"));
-        $passwordInput = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id("password"));
-        $usernameBox->click();
-        $this->webDriver->getKeyboard()->sendKeys('Peter');
-        $this->webDriver->wait(1);
-        $passwordInput->click();
-        $this->webDriver->getKeyboard()->sendKeys('peter');
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('submit'));
-        $submit->click();
-        $this->assertContains("Officer Home Page",$this->webDriver->getTitle());
+
     }
     public function testInvalidLogin(){
         $this->webDriver->get($this->url);

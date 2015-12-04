@@ -4,8 +4,32 @@
     <title>Pin A Task</title>
 </head>
 <body>
-    <form class="center" action="../php/pinTask.php" method="post">
-        <input type="text" placeholder="Document ID To Pin" name="documentId">
-        <input type="submit" value="Pin Task" name="submit">
-    </form>
+<h1>Pin a Task</h1>
+
+<form class="center">
+    <input type="text" placeholder="Document ID To Pin" ng-model="documentId" name="documentId">
+    <input type="submit" value="Pin Task" ng-click="pinTask()" name="submit">
+</form>
+<h2>Recently Added Tasks</h2>
+
+<div ng-init="getRecentlyAddedTasks()">
+    <table class="table table-striped table-hover">
+        <br>
+        <thead>
+        <tr>
+            <th class="text-center">Document Name</th>
+            <th class="text-center">Added Timestamp</th>
+            <th class="text-center">Document ID</th>
+        </tr>
+        </thead>
+        <!--retrieve all users in the base and populate the table.-->
+        <tbody ng-repeat="t in recentTasks">
+        <tr>
+            <td class="col-sm-2 text-center">{{t.documentName}}</td>
+            <td class="col-md-2 text-center">{{t.timestamp}}</td>
+            <td class="col-md-2 text-center">{{t.documentId}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>

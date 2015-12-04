@@ -5,7 +5,8 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
         $scope.OptionsBar = [
             {name: 'Add Task', url: 'newTask'},
             {name: 'Pin Task', url: 'pinTask'},
-            {name: 'View Pinned Task', url: 'viewPinnedTasks'}
+            {name: 'View Pinned Task', url: 'viewPinnedTasks'},
+            {name: 'Browse Uploaded Tasks',url: 'recentTasks' }
         ];
         // For toggling the submenu (view as) for supervisor
         (function ($) {
@@ -27,12 +28,13 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
             });
         }
         $scope.removePin = function(documentId, documentName){
-            DataRequest.removePin()
+            console.log(documentId + ", " + documentName);
+            DataRequest.removePin(documentId)
                 .then(function (data){
                     if(data['documentId'] === null){
-                        displayMessage("Error deleting the message")
+                        displayMessage("Error deleting the Pin")
                     }else{
-                        displayMessage("error deleting Document of Id " + documentId + "Titled" + documentName)
+                        displayMessage("Pin Successfully deleted")
                     }
                 })
         }
@@ -42,6 +44,24 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
             }, function (error) {
                 console.log("Error: " + error);
             });
+        };
+        $scope.getRecentlyAddedTasks = function () {
+            DataRequest.getRecentlyAddedTasks().then(function (data) {
+                    var list = [];
+                    for(var x in data) {
+                        var tmp = new Object();
+                        tmp.documentName = data[x].documentName;
+                        tmp.timestamp = data[x].uploadDate;
+                        tmp.documentId = data[x].documentId;
+                        tmp.category = data[x].category;
+                        tmp.userShift = data[x].userShift;
+                        list.push(tmp);
+                    }
+                    $scope.recentTasks = list;
+                }
+                , function (error) {
+                    console.log("Error: " + error);
+                });
         };
         $scope.addWatchOrder = function(){
             var address = this.address;
@@ -71,7 +91,22 @@ supervisor.controller('SupervisorController', ['$scope', 'DataRequest', '$window
                     });
             }
         }
-        //
+
+        $scope.pinTask = function(){
+            var documentId = this.documentId;
+            if(!documentId){
+                displayMessage("Please enter a DocumentId into the box");
+            }else {
+                DataRequest.pinTask(documentId)
+                    .then(function (data) {
+                        if (data['documentId'] !== null) {
+                            displayMessage("Task Has Been Pinned")
+                        } else {
+                            displayMessage("An Error Occurred While Pinning the task, Task Not Pinned")
+                        }
+                    })
+            }
+        }
         $scope.getPinnedTasks = function(){
             DataRequest.getPinnedTasks().then(function (data) {
                 var list = [];
