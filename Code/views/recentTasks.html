@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Recent Tasks</title>
+</head>
+<body>
+<div ng-init="getRecentlyAddedTasks()"></div>
+<br><br>
+<h1 style="font-weight: bold;"> Recently Uploaded Tasks</h1>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-condensed" width="70%" >
+        <thead>
+        <tr class ="info">
+            <th class="text-center">Document Name</th>
+            <th class="text-center ">DocumentId</th>
+            <th class="text-center">Upload Date and Time</th>
+            <th class="text-center">Category</th>
+            <th class="text-center">Assigned Shift</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--retrieve all users in the base and populate the table.-->
+        <tr class ="active" ng-repeat="t in recentTasks">
+            <td class="col-sm-5 text-center ">{{t.documentName}}</td>
+            <td class="col-sm-5 text-center ">{{t.documentId}}</td>
+            <td class="col-sm-5 text-center "> {{t.timestamp}}</td>
+            <td class="col-sm-5 text-center ">{{t.category}}</td>
+            <td class="col-sm-5 text-center ">{{t.userShift}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

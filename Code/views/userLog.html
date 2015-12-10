@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>User Log</title>
+    </head>
+    <body>
+        <div ng-init="getUserLog()"></div>
+        <br><br>
+        <h1 style="font-weight: bold;"> Activity for {{currentUserLog}}</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-condensed" st-table="userLog" st-safe-src="logHolder" width="70%" >
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <input st-search="" placeholder="Search criteria..." type="text"/>
+                        </th>
+                    </tr>
+                    <tr class ="info">
+                        <th class="text-center" st-sort="Date">Date</th>
+                        <th class="text-center "st-sort="Document">Document</th>
+                        <th class="text-center">View Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--retrieve all users in the base and populate the table.-->
+                    <tr class ="active" ng-repeat="log in userLog">
+                        <td class="col-sm-5 text-center ">{{log.eventDay}}</td>
+                        <td class="col-sm-5 text-center ">{{log.documentName}}</td>
+                        <td class="col-sm-5 text-center "> {{log.viewingTime}} seconds</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> 
+    </body>
+
+</html>
+
+
+

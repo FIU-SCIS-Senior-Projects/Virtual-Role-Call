@@ -1,0 +1,5 @@
+/nbproject*
+/.idea/*
+*.docx
+*.pdf
+scripts/SeleniumTests/vendor

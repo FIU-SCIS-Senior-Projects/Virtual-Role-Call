@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Officer Monitoring</title>
+    </head>
+    <body>
+        <br><br><br>
+        <div ng-init="retrieveUsers()"></div>
+
+        <div class="col-md-2" ng-repeat="u in users" > 
+            <a class="btn btn-primary" href="#/viewLogs/{{u.username}}">
+                <img src="../img/docThumbnail.png"/>
+                <h4 class="customText"> {{u.username}}</h4>
+            </a>   
+            <br><br><br><br>
+        </div> 
+    </body>
+</html>
